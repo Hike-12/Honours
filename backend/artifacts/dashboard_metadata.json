@@ -1,0 +1,3674 @@
+{
+  "uci_metadata": {
+    "uci_id": 891,
+    "name": "CDC Diabetes Health Indicators",
+    "abstract": "The Diabetes Health Indicators Dataset contains healthcare statistics and lifestyle survey information about people in general along with their diagnosis of diabetes. The 35 features consist of some demographics, lab test results, and answers to survey questions for each patient. The target variable for classification is whether a patient has diabetes, is pre-diabetic, or healthy. ",
+    "num_instances": 253680,
+    "num_features": 21,
+    "repository_url": "https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators"
+  },
+  "feature_metadata": {
+    "HighBP": {
+      "label": "High Blood Pressure",
+      "category": "Clinical",
+      "type": "binary",
+      "unit": "0=No, 1=Yes",
+      "healthy_ref": 0,
+      "modifiable": true,
+      "monotonic_cst": 1,
+      "clinical_prior_logit": 0.55,
+      "description": "Diagnosed with high blood pressure by a doctor or health professional."
+    },
+    "HighChol": {
+      "label": "High Cholesterol",
+      "category": "Clinical",
+      "type": "binary",
+      "unit": "0=No, 1=Yes",
+      "healthy_ref": 0,
+      "modifiable": true,
+      "monotonic_cst": 1,
+      "clinical_prior_logit": 0.42,
+      "description": "Ever told by a health professional that blood cholesterol is elevated."
+    },
+    "CholCheck": {
+      "label": "Cholesterol Check (5 Yrs)",
+      "category": "Healthcare",
+      "type": "binary",
+      "unit": "0=No, 1=Yes",
+      "healthy_ref": 1,
+      "modifiable": false,
+      "monotonic_cst": 0,
+      "clinical_prior_logit": 0.0,
+      "description": "Had blood cholesterol screening within the past 5 years."
+    },
+    "BMI": {
+      "label": "Body Mass Index (BMI)",
+      "category": "Clinical",
+      "type": "continuous",
+      "unit": "kg/m\u00b2",
+      "min": 12,
+      "max": 98,
+      "healthy_ref": 23.0,
+      "modifiable": true,
+      "monotonic_cst": 1,
+      "clinical_prior_logit": 0.045,
+      "description": "Body Mass Index calculated from weight and height (kg/m\u00b2)."
+    },
+    "Smoker": {
+      "label": "History of Smoking",
+      "category": "Lifestyle",
+      "type": "binary",
+      "unit": "0=No, 1=Yes",
+      "healthy_ref": 0,
+      "modifiable": true,
+      "monotonic_cst": 1,
+      "clinical_prior_logit": 0.24,
+      "description": "Smoked at least 100 cigarettes (5 packs) in entire lifetime."
+    },
+    "Stroke": {
+      "label": "History of Stroke",
+      "category": "Clinical",
+      "type": "binary",
+      "unit": "0=No, 1=Yes",
+      "healthy_ref": 0,
+      "modifiable": false,
+      "monotonic_cst": 1,
+      "clinical_prior_logit": 0.3,
+      "description": "Ever told patient had a cerebrovascular stroke."
+    },
+    "HeartDiseaseorAttack": {
+      "label": "Heart Disease or Attack",
+      "category": "Clinical",
+      "type": "binary",
+      "unit": "0=No, 1=Yes",
+      "healthy_ref": 0,
+      "modifiable": false,
+      "monotonic_cst": 1,
+      "clinical_prior_logit": 0.38,
+      "description": "Coronary heart disease (CHD) or myocardial infarction (MI)."
+    },
+    "PhysActivity": {
+      "label": "Regular Physical Activity",
+      "category": "Lifestyle",
+      "type": "binary",
+      "unit": "0=No, 1=Yes",
+      "healthy_ref": 1,
+      "modifiable": true,
+      "monotonic_cst": -1,
+      "clinical_prior_logit": -0.26,
+      "description": "Physical activity or exercise during the past 30 days outside regular job."
+    },
+    "Fruits": {
+      "label": "Daily Fruit Intake",
+      "category": "Lifestyle",
+      "type": "binary",
+      "unit": "0=No, 1=Yes",
+      "healthy_ref": 1,
+      "modifiable": true,
+      "monotonic_cst": -1,
+      "clinical_prior_logit": -0.1,
+      "description": "Consumes fruit 1 or more times per day."
+    },
+    "Veggies": {
+      "label": "Daily Vegetable Intake",
+      "category": "Lifestyle",
+      "type": "binary",
+      "unit": "0=No, 1=Yes",
+      "healthy_ref": 1,
+      "modifiable": true,
+      "monotonic_cst": -1,
+      "clinical_prior_logit": -0.12,
+      "description": "Consumes vegetables 1 or more times per day."
+    },
+    "HvyAlcoholConsump": {
+      "label": "Heavy Alcohol Consumption",
+      "category": "Lifestyle",
+      "type": "binary",
+      "unit": "0=No, 1=Yes",
+      "healthy_ref": 0,
+      "modifiable": true,
+      "monotonic_cst": 1,
+      "clinical_prior_logit": 0.28,
+      "description": "Heavy drinking (adult men >=14 drinks/week, adult women >=7 drinks/week)."
+    },
+    "AnyHealthcare": {
+      "label": "Healthcare Coverage",
+      "category": "Healthcare",
+      "type": "binary",
+      "unit": "0=No, 1=Yes",
+      "healthy_ref": 1,
+      "modifiable": false,
+      "monotonic_cst": 0,
+      "clinical_prior_logit": 0.0,
+      "description": "Has health insurance, HMO, or government healthcare coverage."
+    },
+    "NoDocbcCost": {
+      "label": "Deferred Doctor Due to Cost",
+      "category": "Healthcare",
+      "type": "binary",
+      "unit": "0=No, 1=Yes",
+      "healthy_ref": 0,
+      "modifiable": false,
+      "monotonic_cst": 1,
+      "clinical_prior_logit": 0.12,
+      "description": "Needed to see a doctor in past 12 months but could not due to cost."
+    },
+    "GenHlth": {
+      "label": "General Health Rating",
+      "category": "Health Status",
+      "type": "ordinal",
+      "unit": "1=Excellent to 5=Poor",
+      "min": 1,
+      "max": 5,
+      "healthy_ref": 2,
+      "modifiable": true,
+      "monotonic_cst": 1,
+      "clinical_prior_logit": 0.35,
+      "description": "Self-reported general health (1=Excellent, 2=Very Good, 3=Good, 4=Fair, 5=Poor)."
+    },
+    "MentHlth": {
+      "label": "Poor Mental Health Days",
+      "category": "Health Status",
+      "type": "continuous",
+      "unit": "Days (0-30)",
+      "min": 0,
+      "max": 30,
+      "healthy_ref": 0,
+      "modifiable": true,
+      "monotonic_cst": 1,
+      "clinical_prior_logit": 0.005,
+      "description": "Days in past 30 days that mental health (stress, depression) was not good."
+    },
+    "PhysHlth": {
+      "label": "Poor Physical Health Days",
+      "category": "Health Status",
+      "type": "continuous",
+      "unit": "Days (0-30)",
+      "min": 0,
+      "max": 30,
+      "healthy_ref": 0,
+      "modifiable": true,
+      "monotonic_cst": 1,
+      "clinical_prior_logit": 0.008,
+      "description": "Days in past 30 days that physical health (illness/injury) was not good."
+    },
+    "DiffWalk": {
+      "label": "Difficulty Walking / Stairs",
+      "category": "Health Status",
+      "type": "binary",
+      "unit": "0=No, 1=Yes",
+      "healthy_ref": 0,
+      "modifiable": true,
+      "monotonic_cst": 1,
+      "clinical_prior_logit": 0.25,
+      "description": "Serious difficulty walking or climbing stairs."
+    },
+    "Sex": {
+      "label": "Biological Sex",
+      "category": "Demographics",
+      "type": "binary",
+      "unit": "0=Female, 1=Male",
+      "healthy_ref": 0,
+      "modifiable": false,
+      "monotonic_cst": 0,
+      "clinical_prior_logit": 0.08,
+      "description": "Biological sex of respondent (0=Female, 1=Male)."
+    },
+    "Age": {
+      "label": "Age Category (13 Tiers)",
+      "category": "Demographics",
+      "type": "ordinal",
+      "unit": "1 (18-24) to 13 (80+)",
+      "min": 1,
+      "max": 13,
+      "healthy_ref": 4,
+      "modifiable": false,
+      "monotonic_cst": 1,
+      "clinical_prior_logit": 0.12,
+      "description": "13-level age category from BRFSS (1=18-24, ..., 7=50-54, ..., 13=80+)."
+    },
+    "Education": {
+      "label": "Education Level (1-6)",
+      "category": "Demographics",
+      "type": "ordinal",
+      "unit": "1=Never to 6=College Grad",
+      "min": 1,
+      "max": 6,
+      "healthy_ref": 6,
+      "modifiable": false,
+      "monotonic_cst": -1,
+      "clinical_prior_logit": -0.05,
+      "description": "Education scale 1-6 (4=High school grad, 5=Some college, 6=College graduate)."
+    },
+    "Income": {
+      "label": "Household Income Tier (1-8)",
+      "category": "Demographics",
+      "type": "ordinal",
+      "unit": "1 (<$10k) to 8 (>=$75k)",
+      "min": 1,
+      "max": 8,
+      "healthy_ref": 7,
+      "modifiable": false,
+      "monotonic_cst": -1,
+      "clinical_prior_logit": -0.06,
+      "description": "Household income scale 1-8 (1=<$10k, 5=<$35k, 8=$75k or more)."
+    }
+  },
+  "eda": {
+    "total_records": 253680,
+    "num_features": 21,
+    "missing_values": 0,
+    "duplicate_rows": 24206,
+    "class_distribution": {
+      "no_diabetes_count": 218334,
+      "no_diabetes_pct": 86.07,
+      "diabetes_or_prediabetes_count": 35346,
+      "diabetes_or_prediabetes_pct": 13.93,
+      "imbalance_ratio": 6.18
+    },
+    "feature_stats": [
+      {
+        "feature": "GenHlth",
+        "label": "General Health Rating",
+        "category": "Health Status",
+        "type": "ordinal",
+        "unit": "1=Excellent to 5=Poor",
+        "modifiable": true,
+        "healthy_ref": 2,
+        "monotonic_cst": 1,
+        "description": "Self-reported general health (1=Excellent, 2=Very Good, 3=Good, 4=Fair, 5=Poor).",
+        "mean": 2.5114,
+        "std": 1.0685,
+        "min": 1.0,
+        "median": 2.0,
+        "max": 5.0,
+        "mean_no_diabetes": 2.3852,
+        "mean_diabetes": 3.291,
+        "correlation": 0.2936
+      },
+      {
+        "feature": "HighBP",
+        "label": "High Blood Pressure",
+        "category": "Clinical",
+        "type": "binary",
+        "unit": "0=No, 1=Yes",
+        "modifiable": true,
+        "healthy_ref": 0,
+        "monotonic_cst": 1,
+        "description": "Diagnosed with high blood pressure by a doctor or health professional.",
+        "mean": 0.429,
+        "std": 0.4949,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 1.0,
+        "mean_no_diabetes": 0.3766,
+        "mean_diabetes": 0.7527,
+        "correlation": 0.2631
+      },
+      {
+        "feature": "DiffWalk",
+        "label": "Difficulty Walking / Stairs",
+        "category": "Health Status",
+        "type": "binary",
+        "unit": "0=No, 1=Yes",
+        "modifiable": true,
+        "healthy_ref": 0,
+        "monotonic_cst": 1,
+        "description": "Serious difficulty walking or climbing stairs.",
+        "mean": 0.1682,
+        "std": 0.3741,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 1.0,
+        "mean_no_diabetes": 0.1354,
+        "mean_diabetes": 0.3712,
+        "correlation": 0.2183
+      },
+      {
+        "feature": "BMI",
+        "label": "Body Mass Index (BMI)",
+        "category": "Clinical",
+        "type": "continuous",
+        "unit": "kg/m\u00b2",
+        "modifiable": true,
+        "healthy_ref": 23.0,
+        "monotonic_cst": 1,
+        "description": "Body Mass Index calculated from weight and height (kg/m\u00b2).",
+        "mean": 28.3824,
+        "std": 6.6087,
+        "min": 12.0,
+        "median": 27.0,
+        "max": 98.0,
+        "mean_no_diabetes": 27.8058,
+        "mean_diabetes": 31.944,
+        "correlation": 0.2168
+      },
+      {
+        "feature": "HighChol",
+        "label": "High Cholesterol",
+        "category": "Clinical",
+        "type": "binary",
+        "unit": "0=No, 1=Yes",
+        "modifiable": true,
+        "healthy_ref": 0,
+        "monotonic_cst": 1,
+        "description": "Ever told by a health professional that blood cholesterol is elevated.",
+        "mean": 0.4241,
+        "std": 0.4942,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 1.0,
+        "mean_no_diabetes": 0.3843,
+        "mean_diabetes": 0.6701,
+        "correlation": 0.2003
+      },
+      {
+        "feature": "Age",
+        "label": "Age Category (13 Tiers)",
+        "category": "Demographics",
+        "type": "ordinal",
+        "unit": "1 (18-24) to 13 (80+)",
+        "modifiable": false,
+        "healthy_ref": 4,
+        "monotonic_cst": 1,
+        "description": "13-level age category from BRFSS (1=18-24, ..., 7=50-54, ..., 13=80+).",
+        "mean": 8.0321,
+        "std": 3.0542,
+        "min": 1.0,
+        "median": 8.0,
+        "max": 13.0,
+        "mean_no_diabetes": 7.8141,
+        "mean_diabetes": 9.3791,
+        "correlation": 0.1774
+      },
+      {
+        "feature": "HeartDiseaseorAttack",
+        "label": "Heart Disease or Attack",
+        "category": "Clinical",
+        "type": "binary",
+        "unit": "0=No, 1=Yes",
+        "modifiable": false,
+        "healthy_ref": 0,
+        "monotonic_cst": 1,
+        "description": "Coronary heart disease (CHD) or myocardial infarction (MI).",
+        "mean": 0.0942,
+        "std": 0.2921,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 1.0,
+        "mean_no_diabetes": 0.0734,
+        "mean_diabetes": 0.2229,
+        "correlation": 0.1773
+      },
+      {
+        "feature": "PhysHlth",
+        "label": "Poor Physical Health Days",
+        "category": "Health Status",
+        "type": "continuous",
+        "unit": "Days (0-30)",
+        "modifiable": true,
+        "healthy_ref": 0,
+        "monotonic_cst": 1,
+        "description": "Days in past 30 days that physical health (illness/injury) was not good.",
+        "mean": 4.2421,
+        "std": 8.718,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 30.0,
+        "mean_no_diabetes": 3.6411,
+        "mean_diabetes": 7.9545,
+        "correlation": 0.1713
+      },
+      {
+        "feature": "Income",
+        "label": "Household Income Tier (1-8)",
+        "category": "Demographics",
+        "type": "ordinal",
+        "unit": "1 (<$10k) to 8 (>=$75k)",
+        "modifiable": false,
+        "healthy_ref": 7,
+        "monotonic_cst": -1,
+        "description": "Household income scale 1-8 (1=<$10k, 5=<$35k, 8=$75k or more).",
+        "mean": 6.0539,
+        "std": 2.0711,
+        "min": 1.0,
+        "median": 7.0,
+        "max": 8.0,
+        "mean_no_diabetes": 6.1905,
+        "mean_diabetes": 5.2101,
+        "correlation": -0.1639
+      },
+      {
+        "feature": "Education",
+        "label": "Education Level (1-6)",
+        "category": "Demographics",
+        "type": "ordinal",
+        "unit": "1=Never to 6=College Grad",
+        "modifiable": false,
+        "healthy_ref": 6,
+        "monotonic_cst": -1,
+        "description": "Education scale 1-6 (4=High school grad, 5=Some college, 6=College graduate).",
+        "mean": 5.0504,
+        "std": 0.9858,
+        "min": 1.0,
+        "median": 5.0,
+        "max": 6.0,
+        "mean_no_diabetes": 5.0998,
+        "mean_diabetes": 4.7455,
+        "correlation": -0.1245
+      },
+      {
+        "feature": "PhysActivity",
+        "label": "Regular Physical Activity",
+        "category": "Lifestyle",
+        "type": "binary",
+        "unit": "0=No, 1=Yes",
+        "modifiable": true,
+        "healthy_ref": 1,
+        "monotonic_cst": -1,
+        "description": "Physical activity or exercise during the past 30 days outside regular job.",
+        "mean": 0.7565,
+        "std": 0.4292,
+        "min": 0.0,
+        "median": 1.0,
+        "max": 1.0,
+        "mean_no_diabetes": 0.7769,
+        "mean_diabetes": 0.6305,
+        "correlation": -0.1181
+      },
+      {
+        "feature": "Stroke",
+        "label": "History of Stroke",
+        "category": "Clinical",
+        "type": "binary",
+        "unit": "0=No, 1=Yes",
+        "modifiable": false,
+        "healthy_ref": 0,
+        "monotonic_cst": 1,
+        "description": "Ever told patient had a cerebrovascular stroke.",
+        "mean": 0.0406,
+        "std": 0.1973,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 1.0,
+        "mean_no_diabetes": 0.0322,
+        "mean_diabetes": 0.0925,
+        "correlation": 0.1058
+      },
+      {
+        "feature": "MentHlth",
+        "label": "Poor Mental Health Days",
+        "category": "Health Status",
+        "type": "continuous",
+        "unit": "Days (0-30)",
+        "modifiable": true,
+        "healthy_ref": 0,
+        "monotonic_cst": 1,
+        "description": "Days in past 30 days that mental health (stress, depression) was not good.",
+        "mean": 3.1848,
+        "std": 7.4128,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 30.0,
+        "mean_no_diabetes": 2.978,
+        "mean_diabetes": 4.4618,
+        "correlation": 0.0693
+      },
+      {
+        "feature": "CholCheck",
+        "label": "Cholesterol Check (5 Yrs)",
+        "category": "Healthcare",
+        "type": "binary",
+        "unit": "0=No, 1=Yes",
+        "modifiable": false,
+        "healthy_ref": 1,
+        "monotonic_cst": 0,
+        "description": "Had blood cholesterol screening within the past 5 years.",
+        "mean": 0.9627,
+        "std": 0.1896,
+        "min": 0.0,
+        "median": 1.0,
+        "max": 1.0,
+        "mean_no_diabetes": 0.9577,
+        "mean_diabetes": 0.9932,
+        "correlation": 0.0648
+      },
+      {
+        "feature": "Smoker",
+        "label": "History of Smoking",
+        "category": "Lifestyle",
+        "type": "binary",
+        "unit": "0=No, 1=Yes",
+        "modifiable": true,
+        "healthy_ref": 0,
+        "monotonic_cst": 1,
+        "description": "Smoked at least 100 cigarettes (5 packs) in entire lifetime.",
+        "mean": 0.4432,
+        "std": 0.4968,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 1.0,
+        "mean_no_diabetes": 0.431,
+        "mean_diabetes": 0.5182,
+        "correlation": 0.0608
+      },
+      {
+        "feature": "HvyAlcoholConsump",
+        "label": "Heavy Alcohol Consumption",
+        "category": "Lifestyle",
+        "type": "binary",
+        "unit": "0=No, 1=Yes",
+        "modifiable": true,
+        "healthy_ref": 0,
+        "monotonic_cst": 1,
+        "description": "Heavy drinking (adult men >=14 drinks/week, adult women >=7 drinks/week).",
+        "mean": 0.0562,
+        "std": 0.2303,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 1.0,
+        "mean_no_diabetes": 0.0615,
+        "mean_diabetes": 0.0235,
+        "correlation": -0.0571
+      },
+      {
+        "feature": "Veggies",
+        "label": "Daily Vegetable Intake",
+        "category": "Lifestyle",
+        "type": "binary",
+        "unit": "0=No, 1=Yes",
+        "modifiable": true,
+        "healthy_ref": 1,
+        "monotonic_cst": -1,
+        "description": "Consumes vegetables 1 or more times per day.",
+        "mean": 0.8114,
+        "std": 0.3912,
+        "min": 0.0,
+        "median": 1.0,
+        "max": 1.0,
+        "mean_no_diabetes": 0.8203,
+        "mean_diabetes": 0.7564,
+        "correlation": -0.0566
+      },
+      {
+        "feature": "Fruits",
+        "label": "Daily Fruit Intake",
+        "category": "Lifestyle",
+        "type": "binary",
+        "unit": "0=No, 1=Yes",
+        "modifiable": true,
+        "healthy_ref": 1,
+        "monotonic_cst": -1,
+        "description": "Consumes fruit 1 or more times per day.",
+        "mean": 0.6343,
+        "std": 0.4816,
+        "min": 0.0,
+        "median": 1.0,
+        "max": 1.0,
+        "mean_no_diabetes": 0.6422,
+        "mean_diabetes": 0.5854,
+        "correlation": -0.0408
+      },
+      {
+        "feature": "NoDocbcCost",
+        "label": "Deferred Doctor Due to Cost",
+        "category": "Healthcare",
+        "type": "binary",
+        "unit": "0=No, 1=Yes",
+        "modifiable": false,
+        "healthy_ref": 0,
+        "monotonic_cst": 1,
+        "description": "Needed to see a doctor in past 12 months but could not due to cost.",
+        "mean": 0.0842,
+        "std": 0.2777,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 1.0,
+        "mean_no_diabetes": 0.0807,
+        "mean_diabetes": 0.1059,
+        "correlation": 0.0314
+      },
+      {
+        "feature": "Sex",
+        "label": "Biological Sex",
+        "category": "Demographics",
+        "type": "binary",
+        "unit": "0=Female, 1=Male",
+        "modifiable": false,
+        "healthy_ref": 0,
+        "monotonic_cst": 0,
+        "description": "Biological sex of respondent (0=Female, 1=Male).",
+        "mean": 0.4403,
+        "std": 0.4964,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 1.0,
+        "mean_no_diabetes": 0.4341,
+        "mean_diabetes": 0.4791,
+        "correlation": 0.0314
+      },
+      {
+        "feature": "AnyHealthcare",
+        "label": "Healthcare Coverage",
+        "category": "Healthcare",
+        "type": "binary",
+        "unit": "0=No, 1=Yes",
+        "modifiable": false,
+        "healthy_ref": 1,
+        "monotonic_cst": 0,
+        "description": "Has health insurance, HMO, or government healthcare coverage.",
+        "mean": 0.9511,
+        "std": 0.2158,
+        "min": 0.0,
+        "median": 1.0,
+        "max": 1.0,
+        "mean_no_diabetes": 0.9496,
+        "mean_diabetes": 0.9598,
+        "correlation": 0.0163
+      }
+    ],
+    "age_breakdown": [
+      {
+        "age_code": 1,
+        "age_group": "18-24",
+        "total": 5700,
+        "diabetes_cases": 78,
+        "prevalence_pct": 1.37
+      },
+      {
+        "age_code": 2,
+        "age_group": "25-29",
+        "total": 7598,
+        "diabetes_cases": 140,
+        "prevalence_pct": 1.84
+      },
+      {
+        "age_code": 3,
+        "age_group": "30-34",
+        "total": 11123,
+        "diabetes_cases": 314,
+        "prevalence_pct": 2.82
+      },
+      {
+        "age_code": 4,
+        "age_group": "35-39",
+        "total": 13823,
+        "diabetes_cases": 626,
+        "prevalence_pct": 4.53
+      },
+      {
+        "age_code": 5,
+        "age_group": "40-44",
+        "total": 16157,
+        "diabetes_cases": 1051,
+        "prevalence_pct": 6.5
+      },
+      {
+        "age_code": 6,
+        "age_group": "45-49",
+        "total": 19819,
+        "diabetes_cases": 1742,
+        "prevalence_pct": 8.79
+      },
+      {
+        "age_code": 7,
+        "age_group": "50-54",
+        "total": 26314,
+        "diabetes_cases": 3088,
+        "prevalence_pct": 11.74
+      },
+      {
+        "age_code": 8,
+        "age_group": "55-59",
+        "total": 30832,
+        "diabetes_cases": 4263,
+        "prevalence_pct": 13.83
+      },
+      {
+        "age_code": 9,
+        "age_group": "60-64",
+        "total": 33244,
+        "diabetes_cases": 5733,
+        "prevalence_pct": 17.25
+      },
+      {
+        "age_code": 10,
+        "age_group": "65-69",
+        "total": 32194,
+        "diabetes_cases": 6558,
+        "prevalence_pct": 20.37
+      },
+      {
+        "age_code": 11,
+        "age_group": "70-74",
+        "total": 23533,
+        "diabetes_cases": 5141,
+        "prevalence_pct": 21.85
+      },
+      {
+        "age_code": 12,
+        "age_group": "75-79",
+        "total": 15980,
+        "diabetes_cases": 3403,
+        "prevalence_pct": 21.3
+      },
+      {
+        "age_code": 13,
+        "age_group": "80+",
+        "total": 17363,
+        "diabetes_cases": 3209,
+        "prevalence_pct": 18.48
+      }
+    ],
+    "bmi_breakdown": [
+      {
+        "category": "Underweight (<18.5)",
+        "total": 3127,
+        "share_pct": 1.23,
+        "diabetes_cases": 169,
+        "prevalence_pct": 5.4
+      },
+      {
+        "category": "Normal (18.5-24.9)",
+        "total": 68953,
+        "share_pct": 27.18,
+        "diabetes_cases": 3928,
+        "prevalence_pct": 5.7
+      },
+      {
+        "category": "Overweight (25-29.9)",
+        "total": 93749,
+        "share_pct": 36.96,
+        "diabetes_cases": 10692,
+        "prevalence_pct": 11.4
+      },
+      {
+        "category": "Obese I (30-34.9)",
+        "total": 53451,
+        "share_pct": 21.07,
+        "diabetes_cases": 10281,
+        "prevalence_pct": 19.23
+      },
+      {
+        "category": "Obese II (35-39.9)",
+        "total": 20663,
+        "share_pct": 8.15,
+        "diabetes_cases": 5669,
+        "prevalence_pct": 27.44
+      },
+      {
+        "category": "Obese III (>=40)",
+        "total": 13737,
+        "share_pct": 5.42,
+        "diabetes_cases": 4607,
+        "prevalence_pct": 33.54
+      }
+    ],
+    "genhlth_breakdown": [
+      {
+        "code": 1,
+        "label": "Excellent",
+        "total": 45299,
+        "diabetes_cases": 1140,
+        "prevalence_pct": 2.52
+      },
+      {
+        "code": 2,
+        "label": "Very Good",
+        "total": 89084,
+        "diabetes_cases": 6381,
+        "prevalence_pct": 7.16
+      },
+      {
+        "code": 3,
+        "label": "Good",
+        "total": 75646,
+        "diabetes_cases": 13457,
+        "prevalence_pct": 17.79
+      },
+      {
+        "code": 4,
+        "label": "Fair",
+        "total": 31570,
+        "diabetes_cases": 9790,
+        "prevalence_pct": 31.01
+      },
+      {
+        "code": 5,
+        "label": "Poor",
+        "total": 12081,
+        "diabetes_cases": 4578,
+        "prevalence_pct": 37.89
+      }
+    ],
+    "binary_risk_comparison": [
+      {
+        "feature": "HighBP",
+        "label": "High Blood Pressure",
+        "prevalence_when_present_pct": 24.45,
+        "prevalence_when_absent_pct": 6.04,
+        "relative_risk_ratio": 4.05,
+        "population_rate_pct": 42.9
+      },
+      {
+        "feature": "HighChol",
+        "label": "High Cholesterol",
+        "prevalence_when_present_pct": 22.01,
+        "prevalence_when_absent_pct": 7.98,
+        "relative_risk_ratio": 2.76,
+        "population_rate_pct": 42.41
+      },
+      {
+        "feature": "HeartDiseaseorAttack",
+        "label": "Heart Disease or Attack",
+        "prevalence_when_present_pct": 32.97,
+        "prevalence_when_absent_pct": 11.95,
+        "relative_risk_ratio": 2.76,
+        "population_rate_pct": 9.42
+      },
+      {
+        "feature": "DiffWalk",
+        "label": "Difficulty Walking / Stairs",
+        "prevalence_when_present_pct": 30.75,
+        "prevalence_when_absent_pct": 10.53,
+        "relative_risk_ratio": 2.92,
+        "population_rate_pct": 16.82
+      },
+      {
+        "feature": "Stroke",
+        "label": "History of Stroke",
+        "prevalence_when_present_pct": 31.75,
+        "prevalence_when_absent_pct": 13.18,
+        "relative_risk_ratio": 2.41,
+        "population_rate_pct": 4.06
+      },
+      {
+        "feature": "PhysActivity",
+        "label": "Regular Physical Activity",
+        "prevalence_when_present_pct": 11.61,
+        "prevalence_when_absent_pct": 21.14,
+        "relative_risk_ratio": 0.55,
+        "population_rate_pct": 75.65
+      },
+      {
+        "feature": "Smoker",
+        "label": "History of Smoking",
+        "prevalence_when_present_pct": 16.29,
+        "prevalence_when_absent_pct": 12.06,
+        "relative_risk_ratio": 1.35,
+        "population_rate_pct": 44.32
+      },
+      {
+        "feature": "Fruits",
+        "label": "Daily Fruit Intake",
+        "prevalence_when_present_pct": 12.86,
+        "prevalence_when_absent_pct": 15.79,
+        "relative_risk_ratio": 0.81,
+        "population_rate_pct": 63.43
+      },
+      {
+        "feature": "Veggies",
+        "label": "Daily Vegetable Intake",
+        "prevalence_when_present_pct": 12.99,
+        "prevalence_when_absent_pct": 18.0,
+        "relative_risk_ratio": 0.72,
+        "population_rate_pct": 81.14
+      },
+      {
+        "feature": "HvyAlcoholConsump",
+        "label": "Heavy Alcohol Consumption",
+        "prevalence_when_present_pct": 5.84,
+        "prevalence_when_absent_pct": 14.42,
+        "relative_risk_ratio": 0.4,
+        "population_rate_pct": 5.62
+      }
+    ],
+    "income_breakdown": [
+      {
+        "code": 1,
+        "label": "<$10k",
+        "total": 9811,
+        "prevalence_pct": 24.29
+      },
+      {
+        "code": 2,
+        "label": "$10k-$15k",
+        "total": 11783,
+        "prevalence_pct": 26.19
+      },
+      {
+        "code": 3,
+        "label": "$15k-$20k",
+        "total": 15994,
+        "prevalence_pct": 22.31
+      },
+      {
+        "code": 4,
+        "label": "$20k-$25k",
+        "total": 20135,
+        "prevalence_pct": 20.13
+      },
+      {
+        "code": 5,
+        "label": "$25k-$35k",
+        "total": 25883,
+        "prevalence_pct": 17.4
+      },
+      {
+        "code": 6,
+        "label": "$35k-$50k",
+        "total": 36470,
+        "prevalence_pct": 14.51
+      },
+      {
+        "code": 7,
+        "label": "$50k-$75k",
+        "total": 43219,
+        "prevalence_pct": 12.18
+      },
+      {
+        "code": 8,
+        "label": ">=$75k",
+        "total": 90385,
+        "prevalence_pct": 7.96
+      }
+    ]
+  },
+  "ml_evaluation": {
+    "train_size": 202944,
+    "test_size": 50736,
+    "primary_model": "HistGradientBoosting",
+    "recommended_screening_threshold": 0.28,
+    "models": {
+      "HistGradientBoosting": {
+        "name": "HistGradientBoosting",
+        "training_time_sec": 4.23,
+        "standard_threshold_050": {
+          "threshold": 0.5,
+          "accuracy": 0.8603,
+          "precision": 0.4976,
+          "recall_sensitivity": 0.2508,
+          "specificity": 0.959,
+          "f1_score": 0.3335,
+          "npv": 0.8877,
+          "roc_auc": 0.8216,
+          "pr_auc": 0.4096,
+          "brier_score": 0.1005,
+          "confusion_matrix": {
+            "tn": 41877,
+            "fp": 1790,
+            "fn": 5296,
+            "tp": 1773
+          },
+          "roc_curve": [
+            {
+              "fpr": 0.0,
+              "tpr": 0.0
+            },
+            {
+              "fpr": 0.0051,
+              "tpr": 0.0491
+            },
+            {
+              "fpr": 0.0111,
+              "tpr": 0.0945
+            },
+            {
+              "fpr": 0.018,
+              "tpr": 0.1367
+            },
+            {
+              "fpr": 0.0251,
+              "tpr": 0.1732
+            },
+            {
+              "fpr": 0.0322,
+              "tpr": 0.2092
+            },
+            {
+              "fpr": 0.0395,
+              "tpr": 0.2432
+            },
+            {
+              "fpr": 0.0473,
+              "tpr": 0.2767
+            },
+            {
+              "fpr": 0.0561,
+              "tpr": 0.3101
+            },
+            {
+              "fpr": 0.0654,
+              "tpr": 0.3449
+            },
+            {
+              "fpr": 0.0751,
+              "tpr": 0.3766
+            },
+            {
+              "fpr": 0.0845,
+              "tpr": 0.4095
+            },
+            {
+              "fpr": 0.095,
+              "tpr": 0.4421
+            },
+            {
+              "fpr": 0.1066,
+              "tpr": 0.4694
+            },
+            {
+              "fpr": 0.117,
+              "tpr": 0.4991
+            },
+            {
+              "fpr": 0.1281,
+              "tpr": 0.5278
+            },
+            {
+              "fpr": 0.1399,
+              "tpr": 0.5565
+            },
+            {
+              "fpr": 0.1526,
+              "tpr": 0.5833
+            },
+            {
+              "fpr": 0.1657,
+              "tpr": 0.6081
+            },
+            {
+              "fpr": 0.181,
+              "tpr": 0.6332
+            },
+            {
+              "fpr": 0.1956,
+              "tpr": 0.6581
+            },
+            {
+              "fpr": 0.2134,
+              "tpr": 0.6816
+            },
+            {
+              "fpr": 0.2292,
+              "tpr": 0.7075
+            },
+            {
+              "fpr": 0.2462,
+              "tpr": 0.7314
+            },
+            {
+              "fpr": 0.2643,
+              "tpr": 0.7536
+            },
+            {
+              "fpr": 0.2838,
+              "tpr": 0.7771
+            },
+            {
+              "fpr": 0.3038,
+              "tpr": 0.798
+            },
+            {
+              "fpr": 0.3284,
+              "tpr": 0.8195
+            },
+            {
+              "fpr": 0.3553,
+              "tpr": 0.8409
+            },
+            {
+              "fpr": 0.3806,
+              "tpr": 0.8611
+            },
+            {
+              "fpr": 0.4085,
+              "tpr": 0.8806
+            },
+            {
+              "fpr": 0.4395,
+              "tpr": 0.8998
+            },
+            {
+              "fpr": 0.4759,
+              "tpr": 0.9184
+            },
+            {
+              "fpr": 0.5173,
+              "tpr": 0.9344
+            },
+            {
+              "fpr": 0.5573,
+              "tpr": 0.9484
+            },
+            {
+              "fpr": 0.6025,
+              "tpr": 0.9611
+            },
+            {
+              "fpr": 0.6479,
+              "tpr": 0.9724
+            },
+            {
+              "fpr": 0.7029,
+              "tpr": 0.9818
+            },
+            {
+              "fpr": 0.7542,
+              "tpr": 0.9887
+            },
+            {
+              "fpr": 0.8081,
+              "tpr": 0.9936
+            },
+            {
+              "fpr": 0.8601,
+              "tpr": 0.9969
+            },
+            {
+              "fpr": 0.9055,
+              "tpr": 0.9986
+            },
+            {
+              "fpr": 0.9375,
+              "tpr": 0.9993
+            },
+            {
+              "fpr": 0.9612,
+              "tpr": 0.9994
+            },
+            {
+              "fpr": 1.0,
+              "tpr": 1.0
+            }
+          ],
+          "pr_curve": [
+            {
+              "recall": 1.0,
+              "precision": 0.1393
+            },
+            {
+              "recall": 0.9992,
+              "precision": 0.148
+            },
+            {
+              "recall": 0.9984,
+              "precision": 0.152
+            },
+            {
+              "recall": 0.9975,
+              "precision": 0.1559
+            },
+            {
+              "recall": 0.9963,
+              "precision": 0.1599
+            },
+            {
+              "recall": 0.9942,
+              "precision": 0.164
+            },
+            {
+              "recall": 0.9929,
+              "precision": 0.1683
+            },
+            {
+              "recall": 0.99,
+              "precision": 0.1726
+            },
+            {
+              "recall": 0.988,
+              "precision": 0.1774
+            },
+            {
+              "recall": 0.9842,
+              "precision": 0.182
+            },
+            {
+              "recall": 0.9792,
+              "precision": 0.1866
+            },
+            {
+              "recall": 0.9757,
+              "precision": 0.1918
+            },
+            {
+              "recall": 0.9713,
+              "precision": 0.1972
+            },
+            {
+              "recall": 0.9648,
+              "precision": 0.2025
+            },
+            {
+              "recall": 0.9574,
+              "precision": 0.2078
+            },
+            {
+              "recall": 0.9509,
+              "precision": 0.2137
+            },
+            {
+              "recall": 0.9441,
+              "precision": 0.2199
+            },
+            {
+              "recall": 0.9349,
+              "precision": 0.226
+            },
+            {
+              "recall": 0.9259,
+              "precision": 0.2326
+            },
+            {
+              "recall": 0.916,
+              "precision": 0.2395
+            },
+            {
+              "recall": 0.9034,
+              "precision": 0.2461
+            },
+            {
+              "recall": 0.8909,
+              "precision": 0.2534
+            },
+            {
+              "recall": 0.8764,
+              "precision": 0.2607
+            },
+            {
+              "recall": 0.8605,
+              "precision": 0.2684
+            },
+            {
+              "recall": 0.843,
+              "precision": 0.2763
+            },
+            {
+              "recall": 0.8254,
+              "precision": 0.285
+            },
+            {
+              "recall": 0.807,
+              "precision": 0.2944
+            },
+            {
+              "recall": 0.7861,
+              "precision": 0.3038
+            },
+            {
+              "recall": 0.7614,
+              "precision": 0.3127
+            },
+            {
+              "recall": 0.7365,
+              "precision": 0.323
+            },
+            {
+              "recall": 0.7079,
+              "precision": 0.3327
+            },
+            {
+              "recall": 0.6775,
+              "precision": 0.343
+            },
+            {
+              "recall": 0.648,
+              "precision": 0.3557
+            },
+            {
+              "recall": 0.6148,
+              "precision": 0.3682
+            },
+            {
+              "recall": 0.5816,
+              "precision": 0.3832
+            },
+            {
+              "recall": 0.5412,
+              "precision": 0.3963
+            },
+            {
+              "recall": 0.4968,
+              "precision": 0.4094
+            },
+            {
+              "recall": 0.4496,
+              "precision": 0.4236
+            },
+            {
+              "recall": 0.4018,
+              "precision": 0.4418
+            },
+            {
+              "recall": 0.3476,
+              "precision": 0.4589
+            },
+            {
+              "recall": 0.2917,
+              "precision": 0.4814
+            },
+            {
+              "recall": 0.2285,
+              "precision": 0.503
+            },
+            {
+              "recall": 0.1617,
+              "precision": 0.5339
+            },
+            {
+              "recall": 0.0888,
+              "precision": 0.5869
+            },
+            {
+              "recall": 0.0,
+              "precision": 1.0
+            }
+          ]
+        },
+        "clinical_screening_threshold_028": {
+          "threshold": 0.28,
+          "accuracy": 0.8213,
+          "precision": 0.3966,
+          "recall_sensitivity": 0.5411,
+          "specificity": 0.8667,
+          "f1_score": 0.4577,
+          "npv": 0.9211,
+          "roc_auc": 0.8216,
+          "pr_auc": 0.4096,
+          "brier_score": 0.1005,
+          "confusion_matrix": {
+            "tn": 37847,
+            "fp": 5820,
+            "fn": 3244,
+            "tp": 3825
+          },
+          "roc_curve": [
+            {
+              "fpr": 0.0,
+              "tpr": 0.0
+            },
+            {
+              "fpr": 0.0051,
+              "tpr": 0.0491
+            },
+            {
+              "fpr": 0.0111,
+              "tpr": 0.0945
+            },
+            {
+              "fpr": 0.018,
+              "tpr": 0.1367
+            },
+            {
+              "fpr": 0.0251,
+              "tpr": 0.1732
+            },
+            {
+              "fpr": 0.0322,
+              "tpr": 0.2092
+            },
+            {
+              "fpr": 0.0395,
+              "tpr": 0.2432
+            },
+            {
+              "fpr": 0.0473,
+              "tpr": 0.2767
+            },
+            {
+              "fpr": 0.0561,
+              "tpr": 0.3101
+            },
+            {
+              "fpr": 0.0654,
+              "tpr": 0.3449
+            },
+            {
+              "fpr": 0.0751,
+              "tpr": 0.3766
+            },
+            {
+              "fpr": 0.0845,
+              "tpr": 0.4095
+            },
+            {
+              "fpr": 0.095,
+              "tpr": 0.4421
+            },
+            {
+              "fpr": 0.1066,
+              "tpr": 0.4694
+            },
+            {
+              "fpr": 0.117,
+              "tpr": 0.4991
+            },
+            {
+              "fpr": 0.1281,
+              "tpr": 0.5278
+            },
+            {
+              "fpr": 0.1399,
+              "tpr": 0.5565
+            },
+            {
+              "fpr": 0.1526,
+              "tpr": 0.5833
+            },
+            {
+              "fpr": 0.1657,
+              "tpr": 0.6081
+            },
+            {
+              "fpr": 0.181,
+              "tpr": 0.6332
+            },
+            {
+              "fpr": 0.1956,
+              "tpr": 0.6581
+            },
+            {
+              "fpr": 0.2134,
+              "tpr": 0.6816
+            },
+            {
+              "fpr": 0.2292,
+              "tpr": 0.7075
+            },
+            {
+              "fpr": 0.2462,
+              "tpr": 0.7314
+            },
+            {
+              "fpr": 0.2643,
+              "tpr": 0.7536
+            },
+            {
+              "fpr": 0.2838,
+              "tpr": 0.7771
+            },
+            {
+              "fpr": 0.3038,
+              "tpr": 0.798
+            },
+            {
+              "fpr": 0.3284,
+              "tpr": 0.8195
+            },
+            {
+              "fpr": 0.3553,
+              "tpr": 0.8409
+            },
+            {
+              "fpr": 0.3806,
+              "tpr": 0.8611
+            },
+            {
+              "fpr": 0.4085,
+              "tpr": 0.8806
+            },
+            {
+              "fpr": 0.4395,
+              "tpr": 0.8998
+            },
+            {
+              "fpr": 0.4759,
+              "tpr": 0.9184
+            },
+            {
+              "fpr": 0.5173,
+              "tpr": 0.9344
+            },
+            {
+              "fpr": 0.5573,
+              "tpr": 0.9484
+            },
+            {
+              "fpr": 0.6025,
+              "tpr": 0.9611
+            },
+            {
+              "fpr": 0.6479,
+              "tpr": 0.9724
+            },
+            {
+              "fpr": 0.7029,
+              "tpr": 0.9818
+            },
+            {
+              "fpr": 0.7542,
+              "tpr": 0.9887
+            },
+            {
+              "fpr": 0.8081,
+              "tpr": 0.9936
+            },
+            {
+              "fpr": 0.8601,
+              "tpr": 0.9969
+            },
+            {
+              "fpr": 0.9055,
+              "tpr": 0.9986
+            },
+            {
+              "fpr": 0.9375,
+              "tpr": 0.9993
+            },
+            {
+              "fpr": 0.9612,
+              "tpr": 0.9994
+            },
+            {
+              "fpr": 1.0,
+              "tpr": 1.0
+            }
+          ],
+          "pr_curve": [
+            {
+              "recall": 1.0,
+              "precision": 0.1393
+            },
+            {
+              "recall": 0.9992,
+              "precision": 0.148
+            },
+            {
+              "recall": 0.9984,
+              "precision": 0.152
+            },
+            {
+              "recall": 0.9975,
+              "precision": 0.1559
+            },
+            {
+              "recall": 0.9963,
+              "precision": 0.1599
+            },
+            {
+              "recall": 0.9942,
+              "precision": 0.164
+            },
+            {
+              "recall": 0.9929,
+              "precision": 0.1683
+            },
+            {
+              "recall": 0.99,
+              "precision": 0.1726
+            },
+            {
+              "recall": 0.988,
+              "precision": 0.1774
+            },
+            {
+              "recall": 0.9842,
+              "precision": 0.182
+            },
+            {
+              "recall": 0.9792,
+              "precision": 0.1866
+            },
+            {
+              "recall": 0.9757,
+              "precision": 0.1918
+            },
+            {
+              "recall": 0.9713,
+              "precision": 0.1972
+            },
+            {
+              "recall": 0.9648,
+              "precision": 0.2025
+            },
+            {
+              "recall": 0.9574,
+              "precision": 0.2078
+            },
+            {
+              "recall": 0.9509,
+              "precision": 0.2137
+            },
+            {
+              "recall": 0.9441,
+              "precision": 0.2199
+            },
+            {
+              "recall": 0.9349,
+              "precision": 0.226
+            },
+            {
+              "recall": 0.9259,
+              "precision": 0.2326
+            },
+            {
+              "recall": 0.916,
+              "precision": 0.2395
+            },
+            {
+              "recall": 0.9034,
+              "precision": 0.2461
+            },
+            {
+              "recall": 0.8909,
+              "precision": 0.2534
+            },
+            {
+              "recall": 0.8764,
+              "precision": 0.2607
+            },
+            {
+              "recall": 0.8605,
+              "precision": 0.2684
+            },
+            {
+              "recall": 0.843,
+              "precision": 0.2763
+            },
+            {
+              "recall": 0.8254,
+              "precision": 0.285
+            },
+            {
+              "recall": 0.807,
+              "precision": 0.2944
+            },
+            {
+              "recall": 0.7861,
+              "precision": 0.3038
+            },
+            {
+              "recall": 0.7614,
+              "precision": 0.3127
+            },
+            {
+              "recall": 0.7365,
+              "precision": 0.323
+            },
+            {
+              "recall": 0.7079,
+              "precision": 0.3327
+            },
+            {
+              "recall": 0.6775,
+              "precision": 0.343
+            },
+            {
+              "recall": 0.648,
+              "precision": 0.3557
+            },
+            {
+              "recall": 0.6148,
+              "precision": 0.3682
+            },
+            {
+              "recall": 0.5816,
+              "precision": 0.3832
+            },
+            {
+              "recall": 0.5412,
+              "precision": 0.3963
+            },
+            {
+              "recall": 0.4968,
+              "precision": 0.4094
+            },
+            {
+              "recall": 0.4496,
+              "precision": 0.4236
+            },
+            {
+              "recall": 0.4018,
+              "precision": 0.4418
+            },
+            {
+              "recall": 0.3476,
+              "precision": 0.4589
+            },
+            {
+              "recall": 0.2917,
+              "precision": 0.4814
+            },
+            {
+              "recall": 0.2285,
+              "precision": 0.503
+            },
+            {
+              "recall": 0.1617,
+              "precision": 0.5339
+            },
+            {
+              "recall": 0.0888,
+              "precision": 0.5869
+            },
+            {
+              "recall": 0.0,
+              "precision": 1.0
+            }
+          ]
+        }
+      },
+      "LogisticRegression": {
+        "name": "LogisticRegression",
+        "training_time_sec": 0.36,
+        "standard_threshold_050": {
+          "threshold": 0.5,
+          "accuracy": 0.8621,
+          "precision": 0.5171,
+          "recall_sensitivity": 0.1583,
+          "specificity": 0.9761,
+          "f1_score": 0.2424,
+          "npv": 0.8775,
+          "roc_auc": 0.8192,
+          "pr_auc": 0.3942,
+          "brier_score": 0.1,
+          "confusion_matrix": {
+            "tn": 42622,
+            "fp": 1045,
+            "fn": 5950,
+            "tp": 1119
+          },
+          "roc_curve": [
+            {
+              "fpr": 0.0,
+              "tpr": 0.0
+            },
+            {
+              "fpr": 0.0057,
+              "tpr": 0.0465
+            },
+            {
+              "fpr": 0.012,
+              "tpr": 0.0904
+            },
+            {
+              "fpr": 0.0186,
+              "tpr": 0.129
+            },
+            {
+              "fpr": 0.0253,
+              "tpr": 0.1644
+            },
+            {
+              "fpr": 0.0332,
+              "tpr": 0.2033
+            },
+            {
+              "fpr": 0.0413,
+              "tpr": 0.2388
+            },
+            {
+              "fpr": 0.0491,
+              "tpr": 0.2713
+            },
+            {
+              "fpr": 0.057,
+              "tpr": 0.3009
+            },
+            {
+              "fpr": 0.0656,
+              "tpr": 0.3312
+            },
+            {
+              "fpr": 0.0753,
+              "tpr": 0.3621
+            },
+            {
+              "fpr": 0.0846,
+              "tpr": 0.3907
+            },
+            {
+              "fpr": 0.094,
+              "tpr": 0.4221
+            },
+            {
+              "fpr": 0.1034,
+              "tpr": 0.4501
+            },
+            {
+              "fpr": 0.1129,
+              "tpr": 0.4784
+            },
+            {
+              "fpr": 0.124,
+              "tpr": 0.5052
+            },
+            {
+              "fpr": 0.134,
+              "tpr": 0.5325
+            },
+            {
+              "fpr": 0.1469,
+              "tpr": 0.5584
+            },
+            {
+              "fpr": 0.1592,
+              "tpr": 0.5847
+            },
+            {
+              "fpr": 0.172,
+              "tpr": 0.6107
+            },
+            {
+              "fpr": 0.1855,
+              "tpr": 0.6371
+            },
+            {
+              "fpr": 0.2004,
+              "tpr": 0.6613
+            },
+            {
+              "fpr": 0.2139,
+              "tpr": 0.6852
+            },
+            {
+              "fpr": 0.2309,
+              "tpr": 0.7089
+            },
+            {
+              "fpr": 0.2499,
+              "tpr": 0.7321
+            },
+            {
+              "fpr": 0.2679,
+              "tpr": 0.7544
+            },
+            {
+              "fpr": 0.2854,
+              "tpr": 0.7754
+            },
+            {
+              "fpr": 0.3049,
+              "tpr": 0.7971
+            },
+            {
+              "fpr": 0.3297,
+              "tpr": 0.8196
+            },
+            {
+              "fpr": 0.3502,
+              "tpr": 0.8396
+            },
+            {
+              "fpr": 0.3767,
+              "tpr": 0.86
+            },
+            {
+              "fpr": 0.4075,
+              "tpr": 0.8788
+            },
+            {
+              "fpr": 0.4374,
+              "tpr": 0.897
+            },
+            {
+              "fpr": 0.4698,
+              "tpr": 0.9141
+            },
+            {
+              "fpr": 0.5044,
+              "tpr": 0.9303
+            },
+            {
+              "fpr": 0.5445,
+              "tpr": 0.945
+            },
+            {
+              "fpr": 0.5891,
+              "tpr": 0.9581
+            },
+            {
+              "fpr": 0.6328,
+              "tpr": 0.9683
+            },
+            {
+              "fpr": 0.6833,
+              "tpr": 0.9802
+            },
+            {
+              "fpr": 0.7344,
+              "tpr": 0.987
+            },
+            {
+              "fpr": 0.7858,
+              "tpr": 0.9921
+            },
+            {
+              "fpr": 0.8322,
+              "tpr": 0.9956
+            },
+            {
+              "fpr": 0.881,
+              "tpr": 0.997
+            },
+            {
+              "fpr": 0.9303,
+              "tpr": 0.9989
+            },
+            {
+              "fpr": 1.0,
+              "tpr": 1.0
+            }
+          ],
+          "pr_curve": [
+            {
+              "recall": 1.0,
+              "precision": 0.1393
+            },
+            {
+              "recall": 0.9999,
+              "precision": 0.1426
+            },
+            {
+              "recall": 0.9992,
+              "precision": 0.1463
+            },
+            {
+              "recall": 0.9984,
+              "precision": 0.1501
+            },
+            {
+              "recall": 0.9972,
+              "precision": 0.154
+            },
+            {
+              "recall": 0.9965,
+              "precision": 0.1584
+            },
+            {
+              "recall": 0.9956,
+              "precision": 0.1629
+            },
+            {
+              "recall": 0.9939,
+              "precision": 0.1674
+            },
+            {
+              "recall": 0.9907,
+              "precision": 0.1718
+            },
+            {
+              "recall": 0.9881,
+              "precision": 0.1766
+            },
+            {
+              "recall": 0.984,
+              "precision": 0.1813
+            },
+            {
+              "recall": 0.9815,
+              "precision": 0.1866
+            },
+            {
+              "recall": 0.9779,
+              "precision": 0.1919
+            },
+            {
+              "recall": 0.9704,
+              "precision": 0.1968
+            },
+            {
+              "recall": 0.9656,
+              "precision": 0.2025
+            },
+            {
+              "recall": 0.9584,
+              "precision": 0.2083
+            },
+            {
+              "recall": 0.9505,
+              "precision": 0.2141
+            },
+            {
+              "recall": 0.9434,
+              "precision": 0.2205
+            },
+            {
+              "recall": 0.9339,
+              "precision": 0.2269
+            },
+            {
+              "recall": 0.924,
+              "precision": 0.2336
+            },
+            {
+              "recall": 0.9123,
+              "precision": 0.2405
+            },
+            {
+              "recall": 0.8993,
+              "precision": 0.2475
+            },
+            {
+              "recall": 0.8867,
+              "precision": 0.2552
+            },
+            {
+              "recall": 0.8699,
+              "precision": 0.2624
+            },
+            {
+              "recall": 0.857,
+              "precision": 0.2717
+            },
+            {
+              "recall": 0.839,
+              "precision": 0.2801
+            },
+            {
+              "recall": 0.8179,
+              "precision": 0.2884
+            },
+            {
+              "recall": 0.797,
+              "precision": 0.2976
+            },
+            {
+              "recall": 0.7724,
+              "precision": 0.3066
+            },
+            {
+              "recall": 0.7468,
+              "precision": 0.3166
+            },
+            {
+              "recall": 0.7203,
+              "precision": 0.3274
+            },
+            {
+              "recall": 0.691,
+              "precision": 0.3385
+            },
+            {
+              "recall": 0.6578,
+              "precision": 0.3494
+            },
+            {
+              "recall": 0.6231,
+              "precision": 0.3611
+            },
+            {
+              "recall": 0.5847,
+              "precision": 0.3729
+            },
+            {
+              "recall": 0.5445,
+              "precision": 0.3858
+            },
+            {
+              "recall": 0.4999,
+              "precision": 0.3989
+            },
+            {
+              "recall": 0.4524,
+              "precision": 0.413
+            },
+            {
+              "recall": 0.3988,
+              "precision": 0.4248
+            },
+            {
+              "recall": 0.3457,
+              "precision": 0.442
+            },
+            {
+              "recall": 0.2914,
+              "precision": 0.4657
+            },
+            {
+              "recall": 0.2296,
+              "precision": 0.4894
+            },
+            {
+              "recall": 0.1611,
+              "precision": 0.5154
+            },
+            {
+              "recall": 0.0857,
+              "precision": 0.5484
+            },
+            {
+              "recall": 0.0,
+              "precision": 1.0
+            }
+          ]
+        },
+        "clinical_screening_threshold_028": {
+          "threshold": 0.28,
+          "accuracy": 0.8315,
+          "precision": 0.4087,
+          "recall_sensitivity": 0.4689,
+          "specificity": 0.8902,
+          "f1_score": 0.4368,
+          "npv": 0.9119,
+          "roc_auc": 0.8192,
+          "pr_auc": 0.3942,
+          "brier_score": 0.1,
+          "confusion_matrix": {
+            "tn": 38871,
+            "fp": 4796,
+            "fn": 3754,
+            "tp": 3315
+          },
+          "roc_curve": [
+            {
+              "fpr": 0.0,
+              "tpr": 0.0
+            },
+            {
+              "fpr": 0.0057,
+              "tpr": 0.0465
+            },
+            {
+              "fpr": 0.012,
+              "tpr": 0.0904
+            },
+            {
+              "fpr": 0.0186,
+              "tpr": 0.129
+            },
+            {
+              "fpr": 0.0253,
+              "tpr": 0.1644
+            },
+            {
+              "fpr": 0.0332,
+              "tpr": 0.2033
+            },
+            {
+              "fpr": 0.0413,
+              "tpr": 0.2388
+            },
+            {
+              "fpr": 0.0491,
+              "tpr": 0.2713
+            },
+            {
+              "fpr": 0.057,
+              "tpr": 0.3009
+            },
+            {
+              "fpr": 0.0656,
+              "tpr": 0.3312
+            },
+            {
+              "fpr": 0.0753,
+              "tpr": 0.3621
+            },
+            {
+              "fpr": 0.0846,
+              "tpr": 0.3907
+            },
+            {
+              "fpr": 0.094,
+              "tpr": 0.4221
+            },
+            {
+              "fpr": 0.1034,
+              "tpr": 0.4501
+            },
+            {
+              "fpr": 0.1129,
+              "tpr": 0.4784
+            },
+            {
+              "fpr": 0.124,
+              "tpr": 0.5052
+            },
+            {
+              "fpr": 0.134,
+              "tpr": 0.5325
+            },
+            {
+              "fpr": 0.1469,
+              "tpr": 0.5584
+            },
+            {
+              "fpr": 0.1592,
+              "tpr": 0.5847
+            },
+            {
+              "fpr": 0.172,
+              "tpr": 0.6107
+            },
+            {
+              "fpr": 0.1855,
+              "tpr": 0.6371
+            },
+            {
+              "fpr": 0.2004,
+              "tpr": 0.6613
+            },
+            {
+              "fpr": 0.2139,
+              "tpr": 0.6852
+            },
+            {
+              "fpr": 0.2309,
+              "tpr": 0.7089
+            },
+            {
+              "fpr": 0.2499,
+              "tpr": 0.7321
+            },
+            {
+              "fpr": 0.2679,
+              "tpr": 0.7544
+            },
+            {
+              "fpr": 0.2854,
+              "tpr": 0.7754
+            },
+            {
+              "fpr": 0.3049,
+              "tpr": 0.7971
+            },
+            {
+              "fpr": 0.3297,
+              "tpr": 0.8196
+            },
+            {
+              "fpr": 0.3502,
+              "tpr": 0.8396
+            },
+            {
+              "fpr": 0.3767,
+              "tpr": 0.86
+            },
+            {
+              "fpr": 0.4075,
+              "tpr": 0.8788
+            },
+            {
+              "fpr": 0.4374,
+              "tpr": 0.897
+            },
+            {
+              "fpr": 0.4698,
+              "tpr": 0.9141
+            },
+            {
+              "fpr": 0.5044,
+              "tpr": 0.9303
+            },
+            {
+              "fpr": 0.5445,
+              "tpr": 0.945
+            },
+            {
+              "fpr": 0.5891,
+              "tpr": 0.9581
+            },
+            {
+              "fpr": 0.6328,
+              "tpr": 0.9683
+            },
+            {
+              "fpr": 0.6833,
+              "tpr": 0.9802
+            },
+            {
+              "fpr": 0.7344,
+              "tpr": 0.987
+            },
+            {
+              "fpr": 0.7858,
+              "tpr": 0.9921
+            },
+            {
+              "fpr": 0.8322,
+              "tpr": 0.9956
+            },
+            {
+              "fpr": 0.881,
+              "tpr": 0.997
+            },
+            {
+              "fpr": 0.9303,
+              "tpr": 0.9989
+            },
+            {
+              "fpr": 1.0,
+              "tpr": 1.0
+            }
+          ],
+          "pr_curve": [
+            {
+              "recall": 1.0,
+              "precision": 0.1393
+            },
+            {
+              "recall": 0.9999,
+              "precision": 0.1426
+            },
+            {
+              "recall": 0.9992,
+              "precision": 0.1463
+            },
+            {
+              "recall": 0.9984,
+              "precision": 0.1501
+            },
+            {
+              "recall": 0.9972,
+              "precision": 0.154
+            },
+            {
+              "recall": 0.9965,
+              "precision": 0.1584
+            },
+            {
+              "recall": 0.9956,
+              "precision": 0.1629
+            },
+            {
+              "recall": 0.9939,
+              "precision": 0.1674
+            },
+            {
+              "recall": 0.9907,
+              "precision": 0.1718
+            },
+            {
+              "recall": 0.9881,
+              "precision": 0.1766
+            },
+            {
+              "recall": 0.984,
+              "precision": 0.1813
+            },
+            {
+              "recall": 0.9815,
+              "precision": 0.1866
+            },
+            {
+              "recall": 0.9779,
+              "precision": 0.1919
+            },
+            {
+              "recall": 0.9704,
+              "precision": 0.1968
+            },
+            {
+              "recall": 0.9656,
+              "precision": 0.2025
+            },
+            {
+              "recall": 0.9584,
+              "precision": 0.2083
+            },
+            {
+              "recall": 0.9505,
+              "precision": 0.2141
+            },
+            {
+              "recall": 0.9434,
+              "precision": 0.2205
+            },
+            {
+              "recall": 0.9339,
+              "precision": 0.2269
+            },
+            {
+              "recall": 0.924,
+              "precision": 0.2336
+            },
+            {
+              "recall": 0.9123,
+              "precision": 0.2405
+            },
+            {
+              "recall": 0.8993,
+              "precision": 0.2475
+            },
+            {
+              "recall": 0.8867,
+              "precision": 0.2552
+            },
+            {
+              "recall": 0.8699,
+              "precision": 0.2624
+            },
+            {
+              "recall": 0.857,
+              "precision": 0.2717
+            },
+            {
+              "recall": 0.839,
+              "precision": 0.2801
+            },
+            {
+              "recall": 0.8179,
+              "precision": 0.2884
+            },
+            {
+              "recall": 0.797,
+              "precision": 0.2976
+            },
+            {
+              "recall": 0.7724,
+              "precision": 0.3066
+            },
+            {
+              "recall": 0.7468,
+              "precision": 0.3166
+            },
+            {
+              "recall": 0.7203,
+              "precision": 0.3274
+            },
+            {
+              "recall": 0.691,
+              "precision": 0.3385
+            },
+            {
+              "recall": 0.6578,
+              "precision": 0.3494
+            },
+            {
+              "recall": 0.6231,
+              "precision": 0.3611
+            },
+            {
+              "recall": 0.5847,
+              "precision": 0.3729
+            },
+            {
+              "recall": 0.5445,
+              "precision": 0.3858
+            },
+            {
+              "recall": 0.4999,
+              "precision": 0.3989
+            },
+            {
+              "recall": 0.4524,
+              "precision": 0.413
+            },
+            {
+              "recall": 0.3988,
+              "precision": 0.4248
+            },
+            {
+              "recall": 0.3457,
+              "precision": 0.442
+            },
+            {
+              "recall": 0.2914,
+              "precision": 0.4657
+            },
+            {
+              "recall": 0.2296,
+              "precision": 0.4894
+            },
+            {
+              "recall": 0.1611,
+              "precision": 0.5154
+            },
+            {
+              "recall": 0.0857,
+              "precision": 0.5484
+            },
+            {
+              "recall": 0.0,
+              "precision": 1.0
+            }
+          ]
+        }
+      },
+      "RandomForest": {
+        "name": "RandomForest",
+        "training_time_sec": 6.87,
+        "standard_threshold_050": {
+          "threshold": 0.5,
+          "accuracy": 0.8652,
+          "precision": 0.596,
+          "recall_sensitivity": 0.1019,
+          "specificity": 0.9888,
+          "f1_score": 0.174,
+          "npv": 0.8718,
+          "roc_auc": 0.8231,
+          "pr_auc": 0.4187,
+          "brier_score": 0.098,
+          "confusion_matrix": {
+            "tn": 43179,
+            "fp": 488,
+            "fn": 6349,
+            "tp": 720
+          },
+          "roc_curve": [
+            {
+              "fpr": 0.0,
+              "tpr": 0.0
+            },
+            {
+              "fpr": 0.005,
+              "tpr": 0.0539
+            },
+            {
+              "fpr": 0.0107,
+              "tpr": 0.0975
+            },
+            {
+              "fpr": 0.018,
+              "tpr": 0.1409
+            },
+            {
+              "fpr": 0.0241,
+              "tpr": 0.1808
+            },
+            {
+              "fpr": 0.0315,
+              "tpr": 0.2166
+            },
+            {
+              "fpr": 0.0385,
+              "tpr": 0.2505
+            },
+            {
+              "fpr": 0.0471,
+              "tpr": 0.2822
+            },
+            {
+              "fpr": 0.0547,
+              "tpr": 0.3148
+            },
+            {
+              "fpr": 0.0621,
+              "tpr": 0.3447
+            },
+            {
+              "fpr": 0.0715,
+              "tpr": 0.3728
+            },
+            {
+              "fpr": 0.08,
+              "tpr": 0.404
+            },
+            {
+              "fpr": 0.0891,
+              "tpr": 0.4325
+            },
+            {
+              "fpr": 0.0999,
+              "tpr": 0.4602
+            },
+            {
+              "fpr": 0.1122,
+              "tpr": 0.4895
+            },
+            {
+              "fpr": 0.1224,
+              "tpr": 0.5172
+            },
+            {
+              "fpr": 0.1334,
+              "tpr": 0.5463
+            },
+            {
+              "fpr": 0.1461,
+              "tpr": 0.5736
+            },
+            {
+              "fpr": 0.1578,
+              "tpr": 0.5985
+            },
+            {
+              "fpr": 0.1717,
+              "tpr": 0.6237
+            },
+            {
+              "fpr": 0.1856,
+              "tpr": 0.6475
+            },
+            {
+              "fpr": 0.2012,
+              "tpr": 0.6719
+            },
+            {
+              "fpr": 0.2177,
+              "tpr": 0.697
+            },
+            {
+              "fpr": 0.2337,
+              "tpr": 0.7202
+            },
+            {
+              "fpr": 0.2518,
+              "tpr": 0.7421
+            },
+            {
+              "fpr": 0.2701,
+              "tpr": 0.7636
+            },
+            {
+              "fpr": 0.2918,
+              "tpr": 0.7855
+            },
+            {
+              "fpr": 0.3123,
+              "tpr": 0.8063
+            },
+            {
+              "fpr": 0.3343,
+              "tpr": 0.8273
+            },
+            {
+              "fpr": 0.3604,
+              "tpr": 0.8459
+            },
+            {
+              "fpr": 0.3887,
+              "tpr": 0.867
+            },
+            {
+              "fpr": 0.4186,
+              "tpr": 0.8871
+            },
+            {
+              "fpr": 0.453,
+              "tpr": 0.9059
+            },
+            {
+              "fpr": 0.4928,
+              "tpr": 0.9222
+            },
+            {
+              "fpr": 0.5308,
+              "tpr": 0.9376
+            },
+            {
+              "fpr": 0.5727,
+              "tpr": 0.9532
+            },
+            {
+              "fpr": 0.6189,
+              "tpr": 0.9651
+            },
+            {
+              "fpr": 0.6738,
+              "tpr": 0.9762
+            },
+            {
+              "fpr": 0.7287,
+              "tpr": 0.985
+            },
+            {
+              "fpr": 0.7851,
+              "tpr": 0.9909
+            },
+            {
+              "fpr": 0.8323,
+              "tpr": 0.9945
+            },
+            {
+              "fpr": 0.8788,
+              "tpr": 0.9973
+            },
+            {
+              "fpr": 0.9277,
+              "tpr": 0.9987
+            },
+            {
+              "fpr": 0.9708,
+              "tpr": 0.9996
+            },
+            {
+              "fpr": 1.0,
+              "tpr": 1.0
+            }
+          ],
+          "pr_curve": [
+            {
+              "recall": 1.0,
+              "precision": 0.1393
+            },
+            {
+              "recall": 0.9994,
+              "precision": 0.1435
+            },
+            {
+              "recall": 0.9987,
+              "precision": 0.1474
+            },
+            {
+              "recall": 0.9984,
+              "precision": 0.1515
+            },
+            {
+              "recall": 0.9972,
+              "precision": 0.1554
+            },
+            {
+              "recall": 0.9959,
+              "precision": 0.1595
+            },
+            {
+              "recall": 0.9934,
+              "precision": 0.1636
+            },
+            {
+              "recall": 0.9924,
+              "precision": 0.1682
+            },
+            {
+              "recall": 0.989,
+              "precision": 0.1726
+            },
+            {
+              "recall": 0.9863,
+              "precision": 0.1773
+            },
+            {
+              "recall": 0.9836,
+              "precision": 0.1822
+            },
+            {
+              "recall": 0.9789,
+              "precision": 0.1871
+            },
+            {
+              "recall": 0.9747,
+              "precision": 0.1923
+            },
+            {
+              "recall": 0.9692,
+              "precision": 0.1975
+            },
+            {
+              "recall": 0.9631,
+              "precision": 0.203
+            },
+            {
+              "recall": 0.957,
+              "precision": 0.2089
+            },
+            {
+              "recall": 0.9495,
+              "precision": 0.2148
+            },
+            {
+              "recall": 0.941,
+              "precision": 0.2208
+            },
+            {
+              "recall": 0.9315,
+              "precision": 0.2271
+            },
+            {
+              "recall": 0.9201,
+              "precision": 0.2334
+            },
+            {
+              "recall": 0.911,
+              "precision": 0.2409
+            },
+            {
+              "recall": 0.9003,
+              "precision": 0.2485
+            },
+            {
+              "recall": 0.8865,
+              "precision": 0.256
+            },
+            {
+              "recall": 0.8711,
+              "precision": 0.2636
+            },
+            {
+              "recall": 0.855,
+              "precision": 0.2718
+            },
+            {
+              "recall": 0.8365,
+              "precision": 0.2802
+            },
+            {
+              "recall": 0.8191,
+              "precision": 0.2899
+            },
+            {
+              "recall": 0.7987,
+              "precision": 0.2994
+            },
+            {
+              "recall": 0.7744,
+              "precision": 0.3085
+            },
+            {
+              "recall": 0.7505,
+              "precision": 0.3191
+            },
+            {
+              "recall": 0.7249,
+              "precision": 0.3302
+            },
+            {
+              "recall": 0.6954,
+              "precision": 0.3414
+            },
+            {
+              "recall": 0.6645,
+              "precision": 0.3533
+            },
+            {
+              "recall": 0.6335,
+              "precision": 0.3675
+            },
+            {
+              "recall": 0.5964,
+              "precision": 0.3808
+            },
+            {
+              "recall": 0.5565,
+              "precision": 0.395
+            },
+            {
+              "recall": 0.512,
+              "precision": 0.4089
+            },
+            {
+              "recall": 0.4648,
+              "precision": 0.4246
+            },
+            {
+              "recall": 0.4166,
+              "precision": 0.4441
+            },
+            {
+              "recall": 0.3629,
+              "precision": 0.4642
+            },
+            {
+              "recall": 0.3026,
+              "precision": 0.4843
+            },
+            {
+              "recall": 0.2409,
+              "precision": 0.5143
+            },
+            {
+              "recall": 0.1719,
+              "precision": 0.5503
+            },
+            {
+              "recall": 0.0936,
+              "precision": 0.5991
+            },
+            {
+              "recall": 0.0,
+              "precision": 1.0
+            }
+          ]
+        },
+        "clinical_screening_threshold_028": {
+          "threshold": 0.28,
+          "accuracy": 0.8335,
+          "precision": 0.4164,
+          "recall_sensitivity": 0.4854,
+          "specificity": 0.8899,
+          "f1_score": 0.4482,
+          "npv": 0.9144,
+          "roc_auc": 0.8231,
+          "pr_auc": 0.4187,
+          "brier_score": 0.098,
+          "confusion_matrix": {
+            "tn": 38858,
+            "fp": 4809,
+            "fn": 3638,
+            "tp": 3431
+          },
+          "roc_curve": [
+            {
+              "fpr": 0.0,
+              "tpr": 0.0
+            },
+            {
+              "fpr": 0.005,
+              "tpr": 0.0539
+            },
+            {
+              "fpr": 0.0107,
+              "tpr": 0.0975
+            },
+            {
+              "fpr": 0.018,
+              "tpr": 0.1409
+            },
+            {
+              "fpr": 0.0241,
+              "tpr": 0.1808
+            },
+            {
+              "fpr": 0.0315,
+              "tpr": 0.2166
+            },
+            {
+              "fpr": 0.0385,
+              "tpr": 0.2505
+            },
+            {
+              "fpr": 0.0471,
+              "tpr": 0.2822
+            },
+            {
+              "fpr": 0.0547,
+              "tpr": 0.3148
+            },
+            {
+              "fpr": 0.0621,
+              "tpr": 0.3447
+            },
+            {
+              "fpr": 0.0715,
+              "tpr": 0.3728
+            },
+            {
+              "fpr": 0.08,
+              "tpr": 0.404
+            },
+            {
+              "fpr": 0.0891,
+              "tpr": 0.4325
+            },
+            {
+              "fpr": 0.0999,
+              "tpr": 0.4602
+            },
+            {
+              "fpr": 0.1122,
+              "tpr": 0.4895
+            },
+            {
+              "fpr": 0.1224,
+              "tpr": 0.5172
+            },
+            {
+              "fpr": 0.1334,
+              "tpr": 0.5463
+            },
+            {
+              "fpr": 0.1461,
+              "tpr": 0.5736
+            },
+            {
+              "fpr": 0.1578,
+              "tpr": 0.5985
+            },
+            {
+              "fpr": 0.1717,
+              "tpr": 0.6237
+            },
+            {
+              "fpr": 0.1856,
+              "tpr": 0.6475
+            },
+            {
+              "fpr": 0.2012,
+              "tpr": 0.6719
+            },
+            {
+              "fpr": 0.2177,
+              "tpr": 0.697
+            },
+            {
+              "fpr": 0.2337,
+              "tpr": 0.7202
+            },
+            {
+              "fpr": 0.2518,
+              "tpr": 0.7421
+            },
+            {
+              "fpr": 0.2701,
+              "tpr": 0.7636
+            },
+            {
+              "fpr": 0.2918,
+              "tpr": 0.7855
+            },
+            {
+              "fpr": 0.3123,
+              "tpr": 0.8063
+            },
+            {
+              "fpr": 0.3343,
+              "tpr": 0.8273
+            },
+            {
+              "fpr": 0.3604,
+              "tpr": 0.8459
+            },
+            {
+              "fpr": 0.3887,
+              "tpr": 0.867
+            },
+            {
+              "fpr": 0.4186,
+              "tpr": 0.8871
+            },
+            {
+              "fpr": 0.453,
+              "tpr": 0.9059
+            },
+            {
+              "fpr": 0.4928,
+              "tpr": 0.9222
+            },
+            {
+              "fpr": 0.5308,
+              "tpr": 0.9376
+            },
+            {
+              "fpr": 0.5727,
+              "tpr": 0.9532
+            },
+            {
+              "fpr": 0.6189,
+              "tpr": 0.9651
+            },
+            {
+              "fpr": 0.6738,
+              "tpr": 0.9762
+            },
+            {
+              "fpr": 0.7287,
+              "tpr": 0.985
+            },
+            {
+              "fpr": 0.7851,
+              "tpr": 0.9909
+            },
+            {
+              "fpr": 0.8323,
+              "tpr": 0.9945
+            },
+            {
+              "fpr": 0.8788,
+              "tpr": 0.9973
+            },
+            {
+              "fpr": 0.9277,
+              "tpr": 0.9987
+            },
+            {
+              "fpr": 0.9708,
+              "tpr": 0.9996
+            },
+            {
+              "fpr": 1.0,
+              "tpr": 1.0
+            }
+          ],
+          "pr_curve": [
+            {
+              "recall": 1.0,
+              "precision": 0.1393
+            },
+            {
+              "recall": 0.9994,
+              "precision": 0.1435
+            },
+            {
+              "recall": 0.9987,
+              "precision": 0.1474
+            },
+            {
+              "recall": 0.9984,
+              "precision": 0.1515
+            },
+            {
+              "recall": 0.9972,
+              "precision": 0.1554
+            },
+            {
+              "recall": 0.9959,
+              "precision": 0.1595
+            },
+            {
+              "recall": 0.9934,
+              "precision": 0.1636
+            },
+            {
+              "recall": 0.9924,
+              "precision": 0.1682
+            },
+            {
+              "recall": 0.989,
+              "precision": 0.1726
+            },
+            {
+              "recall": 0.9863,
+              "precision": 0.1773
+            },
+            {
+              "recall": 0.9836,
+              "precision": 0.1822
+            },
+            {
+              "recall": 0.9789,
+              "precision": 0.1871
+            },
+            {
+              "recall": 0.9747,
+              "precision": 0.1923
+            },
+            {
+              "recall": 0.9692,
+              "precision": 0.1975
+            },
+            {
+              "recall": 0.9631,
+              "precision": 0.203
+            },
+            {
+              "recall": 0.957,
+              "precision": 0.2089
+            },
+            {
+              "recall": 0.9495,
+              "precision": 0.2148
+            },
+            {
+              "recall": 0.941,
+              "precision": 0.2208
+            },
+            {
+              "recall": 0.9315,
+              "precision": 0.2271
+            },
+            {
+              "recall": 0.9201,
+              "precision": 0.2334
+            },
+            {
+              "recall": 0.911,
+              "precision": 0.2409
+            },
+            {
+              "recall": 0.9003,
+              "precision": 0.2485
+            },
+            {
+              "recall": 0.8865,
+              "precision": 0.256
+            },
+            {
+              "recall": 0.8711,
+              "precision": 0.2636
+            },
+            {
+              "recall": 0.855,
+              "precision": 0.2718
+            },
+            {
+              "recall": 0.8365,
+              "precision": 0.2802
+            },
+            {
+              "recall": 0.8191,
+              "precision": 0.2899
+            },
+            {
+              "recall": 0.7987,
+              "precision": 0.2994
+            },
+            {
+              "recall": 0.7744,
+              "precision": 0.3085
+            },
+            {
+              "recall": 0.7505,
+              "precision": 0.3191
+            },
+            {
+              "recall": 0.7249,
+              "precision": 0.3302
+            },
+            {
+              "recall": 0.6954,
+              "precision": 0.3414
+            },
+            {
+              "recall": 0.6645,
+              "precision": 0.3533
+            },
+            {
+              "recall": 0.6335,
+              "precision": 0.3675
+            },
+            {
+              "recall": 0.5964,
+              "precision": 0.3808
+            },
+            {
+              "recall": 0.5565,
+              "precision": 0.395
+            },
+            {
+              "recall": 0.512,
+              "precision": 0.4089
+            },
+            {
+              "recall": 0.4648,
+              "precision": 0.4246
+            },
+            {
+              "recall": 0.4166,
+              "precision": 0.4441
+            },
+            {
+              "recall": 0.3629,
+              "precision": 0.4642
+            },
+            {
+              "recall": 0.3026,
+              "precision": 0.4843
+            },
+            {
+              "recall": 0.2409,
+              "precision": 0.5143
+            },
+            {
+              "recall": 0.1719,
+              "precision": 0.5503
+            },
+            {
+              "recall": 0.0936,
+              "precision": 0.5991
+            },
+            {
+              "recall": 0.0,
+              "precision": 1.0
+            }
+          ]
+        }
+      }
+    },
+    "feature_importances": [
+      {
+        "feature": "GenHlth",
+        "label": "General Health Rating",
+        "category": "Health Status",
+        "modifiable": true,
+        "monotonic_direction": 1,
+        "importance_auc_drop": 0.05899,
+        "importance_share_pct": 32.86,
+        "standardized_log_odds": 0.5722,
+        "odds_ratio_per_sd": 1.7722,
+        "population_mean": 2.5118,
+        "population_std": 1.0684,
+        "healthy_ref": 2
+      },
+      {
+        "feature": "BMI",
+        "label": "Body Mass Index (BMI)",
+        "category": "Clinical",
+        "modifiable": true,
+        "monotonic_direction": 1,
+        "importance_auc_drop": 0.03762,
+        "importance_share_pct": 20.95,
+        "standardized_log_odds": 0.4083,
+        "odds_ratio_per_sd": 1.5043,
+        "population_mean": 28.378,
+        "population_std": 6.5983,
+        "healthy_ref": 23.0
+      },
+      {
+        "feature": "Age",
+        "label": "Age Category (13 Tiers)",
+        "category": "Demographics",
+        "modifiable": false,
+        "monotonic_direction": 1,
+        "importance_auc_drop": 0.03594,
+        "importance_share_pct": 20.02,
+        "standardized_log_odds": 0.3823,
+        "odds_ratio_per_sd": 1.4657,
+        "population_mean": 8.0328,
+        "population_std": 3.0514,
+        "healthy_ref": 4
+      },
+      {
+        "feature": "HighBP",
+        "label": "High Blood Pressure",
+        "category": "Clinical",
+        "modifiable": true,
+        "monotonic_direction": 1,
+        "importance_auc_drop": 0.02004,
+        "importance_share_pct": 11.16,
+        "standardized_log_odds": 0.3738,
+        "odds_ratio_per_sd": 1.4533,
+        "population_mean": 0.429,
+        "population_std": 0.4949,
+        "healthy_ref": 0
+      },
+      {
+        "feature": "HighChol",
+        "label": "High Cholesterol",
+        "category": "Clinical",
+        "modifiable": true,
+        "monotonic_direction": 1,
+        "importance_auc_drop": 0.0104,
+        "importance_share_pct": 5.79,
+        "standardized_log_odds": 0.2863,
+        "odds_ratio_per_sd": 1.3315,
+        "population_mean": 0.4243,
+        "population_std": 0.4942,
+        "healthy_ref": 0
+      },
+      {
+        "feature": "CholCheck",
+        "label": "Cholesterol Check (5 Yrs)",
+        "category": "Healthcare",
+        "modifiable": false,
+        "monotonic_direction": 0,
+        "importance_auc_drop": 0.0063,
+        "importance_share_pct": 3.51,
+        "standardized_log_odds": 0.2376,
+        "odds_ratio_per_sd": 1.2682,
+        "population_mean": 0.9624,
+        "population_std": 0.1902,
+        "healthy_ref": 1
+      },
+      {
+        "feature": "Income",
+        "label": "Household Income Tier (1-8)",
+        "category": "Demographics",
+        "modifiable": false,
+        "monotonic_direction": -1,
+        "importance_auc_drop": 0.00414,
+        "importance_share_pct": 2.31,
+        "standardized_log_odds": -0.1052,
+        "odds_ratio_per_sd": 0.9001,
+        "population_mean": 6.0508,
+        "population_std": 2.0727,
+        "healthy_ref": 7
+      },
+      {
+        "feature": "Sex",
+        "label": "Biological Sex",
+        "category": "Demographics",
+        "modifiable": false,
+        "monotonic_direction": 0,
+        "importance_auc_drop": 0.00266,
+        "importance_share_pct": 1.48,
+        "standardized_log_odds": 0.1257,
+        "odds_ratio_per_sd": 1.1339,
+        "population_mean": 0.441,
+        "population_std": 0.4965,
+        "healthy_ref": 0
+      },
+      {
+        "feature": "HeartDiseaseorAttack",
+        "label": "Heart Disease or Attack",
+        "category": "Clinical",
+        "modifiable": false,
+        "monotonic_direction": 1,
+        "importance_auc_drop": 0.00207,
+        "importance_share_pct": 1.15,
+        "standardized_log_odds": 0.0654,
+        "odds_ratio_per_sd": 1.0676,
+        "population_mean": 0.0942,
+        "population_std": 0.2922,
+        "healthy_ref": 0
+      },
+      {
+        "feature": "Smoker",
+        "label": "History of Smoking",
+        "category": "Lifestyle",
+        "modifiable": true,
+        "monotonic_direction": 1,
+        "importance_auc_drop": 0.0005,
+        "importance_share_pct": 0.28,
+        "standardized_log_odds": -0.004,
+        "odds_ratio_per_sd": 0.996,
+        "population_mean": 0.4429,
+        "population_std": 0.4967,
+        "healthy_ref": 0
+      },
+      {
+        "feature": "Stroke",
+        "label": "History of Stroke",
+        "category": "Clinical",
+        "modifiable": false,
+        "monotonic_direction": 1,
+        "importance_auc_drop": 0.0005,
+        "importance_share_pct": 0.28,
+        "standardized_log_odds": 0.0285,
+        "odds_ratio_per_sd": 1.0289,
+        "population_mean": 0.0404,
+        "population_std": 0.1969,
+        "healthy_ref": 0
+      },
+      {
+        "feature": "PhysActivity",
+        "label": "Regular Physical Activity",
+        "category": "Lifestyle",
+        "modifiable": true,
+        "monotonic_direction": -1,
+        "importance_auc_drop": 0.0005,
+        "importance_share_pct": 0.28,
+        "standardized_log_odds": -0.0212,
+        "odds_ratio_per_sd": 0.9791,
+        "population_mean": 0.757,
+        "population_std": 0.4289,
+        "healthy_ref": 1
+      },
+      {
+        "feature": "Fruits",
+        "label": "Daily Fruit Intake",
+        "category": "Lifestyle",
+        "modifiable": true,
+        "monotonic_direction": -1,
+        "importance_auc_drop": 0.0005,
+        "importance_share_pct": 0.28,
+        "standardized_log_odds": -0.0338,
+        "odds_ratio_per_sd": 0.9668,
+        "population_mean": 0.6344,
+        "population_std": 0.4816,
+        "healthy_ref": 1
+      },
+      {
+        "feature": "Veggies",
+        "label": "Daily Vegetable Intake",
+        "category": "Lifestyle",
+        "modifiable": true,
+        "monotonic_direction": -1,
+        "importance_auc_drop": 0.0005,
+        "importance_share_pct": 0.28,
+        "standardized_log_odds": -0.0066,
+        "odds_ratio_per_sd": 0.9935,
+        "population_mean": 0.8114,
+        "population_std": 0.3912,
+        "healthy_ref": 1
+      },
+      {
+        "feature": "HvyAlcoholConsump",
+        "label": "Heavy Alcohol Consumption",
+        "category": "Lifestyle",
+        "modifiable": true,
+        "monotonic_direction": 1,
+        "importance_auc_drop": 0.0005,
+        "importance_share_pct": 0.28,
+        "standardized_log_odds": -0.1818,
+        "odds_ratio_per_sd": 0.8338,
+        "population_mean": 0.0557,
+        "population_std": 0.2294,
+        "healthy_ref": 0
+      },
+      {
+        "feature": "AnyHealthcare",
+        "label": "Healthcare Coverage",
+        "category": "Healthcare",
+        "modifiable": false,
+        "monotonic_direction": 0,
+        "importance_auc_drop": 0.0005,
+        "importance_share_pct": 0.28,
+        "standardized_log_odds": 0.0178,
+        "odds_ratio_per_sd": 1.018,
+        "population_mean": 0.9511,
+        "population_std": 0.2156,
+        "healthy_ref": 1
+      },
+      {
+        "feature": "NoDocbcCost",
+        "label": "Deferred Doctor Due to Cost",
+        "category": "Healthcare",
+        "modifiable": false,
+        "monotonic_direction": 1,
+        "importance_auc_drop": 0.0005,
+        "importance_share_pct": 0.28,
+        "standardized_log_odds": 0.0087,
+        "odds_ratio_per_sd": 1.0087,
+        "population_mean": 0.0846,
+        "population_std": 0.2783,
+        "healthy_ref": 0
+      },
+      {
+        "feature": "MentHlth",
+        "label": "Poor Mental Health Days",
+        "category": "Health Status",
+        "modifiable": true,
+        "monotonic_direction": 1,
+        "importance_auc_drop": 0.0005,
+        "importance_share_pct": 0.28,
+        "standardized_log_odds": -0.0275,
+        "odds_ratio_per_sd": 0.9729,
+        "population_mean": 3.1898,
+        "population_std": 7.4176,
+        "healthy_ref": 0
+      },
+      {
+        "feature": "PhysHlth",
+        "label": "Poor Physical Health Days",
+        "category": "Health Status",
+        "modifiable": true,
+        "monotonic_direction": 1,
+        "importance_auc_drop": 0.0005,
+        "importance_share_pct": 0.28,
+        "standardized_log_odds": -0.0634,
+        "odds_ratio_per_sd": 0.9385,
+        "population_mean": 4.2508,
+        "population_std": 8.7256,
+        "healthy_ref": 0
+      },
+      {
+        "feature": "DiffWalk",
+        "label": "Difficulty Walking / Stairs",
+        "category": "Health Status",
+        "modifiable": true,
+        "monotonic_direction": 1,
+        "importance_auc_drop": 0.0005,
+        "importance_share_pct": 0.28,
+        "standardized_log_odds": 0.0479,
+        "odds_ratio_per_sd": 1.049,
+        "population_mean": 0.1682,
+        "population_std": 0.374,
+        "healthy_ref": 0
+      },
+      {
+        "feature": "Education",
+        "label": "Education Level (1-6)",
+        "category": "Demographics",
+        "modifiable": false,
+        "monotonic_direction": -1,
+        "importance_auc_drop": 0.0005,
+        "importance_share_pct": 0.28,
+        "standardized_log_odds": -0.0303,
+        "odds_ratio_per_sd": 0.9702,
+        "population_mean": 5.0499,
+        "population_std": 0.9864,
+        "healthy_ref": 6
+      }
+    ],
+    "threshold_sensitivity": [
+      {
+        "threshold": 0.15,
+        "accuracy": 0.7305,
+        "precision": 0.3109,
+        "recall_sensitivity": 0.7679,
+        "specificity": 0.7244,
+        "f1_score": 0.4426
+      },
+      {
+        "threshold": 0.2,
+        "accuracy": 0.7765,
+        "precision": 0.3451,
+        "recall_sensitivity": 0.6728,
+        "specificity": 0.7933,
+        "f1_score": 0.4562
+      },
+      {
+        "threshold": 0.25,
+        "accuracy": 0.8089,
+        "precision": 0.3802,
+        "recall_sensitivity": 0.5899,
+        "specificity": 0.8443,
+        "f1_score": 0.4624
+      },
+      {
+        "threshold": 0.28,
+        "accuracy": 0.8213,
+        "precision": 0.3966,
+        "recall_sensitivity": 0.5411,
+        "specificity": 0.8667,
+        "f1_score": 0.4577
+      },
+      {
+        "threshold": 0.3,
+        "accuracy": 0.8278,
+        "precision": 0.4056,
+        "recall_sensitivity": 0.5063,
+        "specificity": 0.8799,
+        "f1_score": 0.4504
+      },
+      {
+        "threshold": 0.35,
+        "accuracy": 0.8418,
+        "precision": 0.4329,
+        "recall_sensitivity": 0.4354,
+        "specificity": 0.9076,
+        "f1_score": 0.4341
+      },
+      {
+        "threshold": 0.4,
+        "accuracy": 0.8497,
+        "precision": 0.4512,
+        "recall_sensitivity": 0.364,
+        "specificity": 0.9283,
+        "f1_score": 0.4029
+      },
+      {
+        "threshold": 0.5,
+        "accuracy": 0.8603,
+        "precision": 0.4976,
+        "recall_sensitivity": 0.2508,
+        "specificity": 0.959,
+        "f1_score": 0.3335
+      }
+    ],
+    "feature_order": [
+      "HighBP",
+      "HighChol",
+      "CholCheck",
+      "BMI",
+      "Smoker",
+      "Stroke",
+      "HeartDiseaseorAttack",
+      "PhysActivity",
+      "Fruits",
+      "Veggies",
+      "HvyAlcoholConsump",
+      "AnyHealthcare",
+      "NoDocbcCost",
+      "GenHlth",
+      "MentHlth",
+      "PhysHlth",
+      "DiffWalk",
+      "Sex",
+      "Age",
+      "Education",
+      "Income"
+    ]
+  }
+}
