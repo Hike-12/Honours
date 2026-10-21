@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import { Icon } from './Icon.jsx';
 import { Close, Info } from '../lib/icons.js';
@@ -32,12 +33,12 @@ export default function FactorsDialog({ open, onClose, contributions }) {
     return () => document.removeEventListener('keydown', onKey);
   }, [open, onClose]);
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {open ? (
         <motion.div
           key="factors"
-          className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-6"
+          className="fixed inset-0 z-[100] flex items-end justify-center p-0 sm:items-center sm:p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -123,6 +124,7 @@ export default function FactorsDialog({ open, onClose, contributions }) {
           </motion.div>
         </motion.div>
       ) : null}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

@@ -367,7 +367,7 @@ export default function ResultCard({
         style={{ padding: 'var(--rc-pad, 1.25rem)' }}
       >
         {canImprove ? (
-          <div className="rounded-xl bg-accent-soft p-3">
+          <div className="rounded-xl bg-accent-soft p-3 dark:bg-zinc-900">
             <div className="flex items-center gap-2">
               <Icon icon={Sparkles} size={15} className="text-accent-text" />
               <h3 className="text-[12.5px] font-semibold text-accent-text">What could help</h3>
