@@ -142,11 +142,11 @@ Confusion Matrix Analysis at Clinical Screening Cut-Point (tau = 0.28): On the 5
 
 *Figure 3: (A) Receiver Operating Characteristic (ROC) curves and (B) Precision-Recall curves comparing HistGradientBoosting, RandomForest, and LogisticRegression on the 50,736 held-out test set.*
 
-*Figure 4: Live Application Screenshot - Patient Risk Workbench showing 21-indicator clinical controls, real-time 63.8% High Risk stratification, Counterfactual What-If Intervention Pathway (-33.9% risk reduction), and Local Feature Attribution.*
+*Figure 4: Live application screenshot - Patient check-up showing the body assessment step, a live risk estimate, contributing factors, and suggested actions.*
 
-*Figure 5: Live Application Screenshot - Population Exploratory Data Analysis module displaying age gradients, WHO BMI tiers, comorbidity relative risk multipliers, and the searchable 21-variable correlation table.*
+*Figure 5: Live application screenshot - Population data view summarizing 253,680 survey responses and showing diabetes prevalence patterns by age and BMI.*
 
-*Figure 6: Live Application Screenshot - Model Evaluation and Explainable AI Governance view showing multi-model benchmarks, interactive ROC/PR curves, 2x2 confusion matrix telemetry, and global feature importances.*
+*Figure 6: Live application screenshot - Model evaluation view showing the ROC performance curve and sensitivity-specificity trade-off at the screening cut-off.*
 
 
 ## 25. Explainability / Interpretation (Where Applicable)
