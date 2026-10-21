@@ -32,7 +32,8 @@ from schema import FEATURE_META
 class ClinicallyConstrainedHGB(BaseEstimator, ClassifierMixin):
     """
     Wraps HistGradientBoostingClassifier with:
-    1. Tree-level monotonicity constraints (`monotonic_cst`) across all 21 clinical indicators.
+    1. Tree-level monotonicity constraints (`monotonic_cst`) across all 20 modelled clinical
+       indicators (`CholCheck`, a healthcare-access proxy, is excluded upstream in train_and_eda).
     2. Evidence-based clinical log-odds regularization for lifestyle/comorbidity indicators
        that suffer from cross-sectional survey confounding (e.g., HvyAlcoholConsump, Smoker)
        so that harmful risk factors strictly increase risk and healthy habits strictly lower risk.

@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import {
-  PulseIcon,
-  AlertTriangleIcon,
-} from './components/Icons.jsx';
-import RiskWorkbench from './components/RiskWorkbench.jsx';
-import PopulationEDA from './components/PopulationEDA.jsx';
-import ModelEvaluation from './components/ModelEvaluation.jsx';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { motion } from 'motion/react';
+import { Icon } from './components/Icon.jsx';
+import ThemeToggle from './components/ThemeToggle.jsx';
+import Checkup from './components/Checkup.jsx';
+import ExploreData from './components/ExploreData.jsx';
+import HowItWorks from './components/HowItWorks.jsx';
+import PageGrid, { ScrollCue } from './components/PageGrid.jsx';
+import { HeartPulse, Refresh } from './lib/icons.js';
+import { SPRING_SNAP } from './lib/motion.js';
 
 const DEFAULT_INDICATORS = {
   HighBP: 1,
@@ -31,214 +33,292 @@ const DEFAULT_INDICATORS = {
   Income: 5,
 };
 
+const TABS = [
+  { id: 'checkup', label: 'Check-up', short: 'Check-up' },
+  { id: 'data', label: 'The data', short: 'Data' },
+  { id: 'how', label: 'How it works', short: 'How' },
+];
+
+async function getJson(url, signal) {
+  const response = await fetch(url, { signal });
+  if (!response.ok) throw new Error(`${url} returned ${response.status}`);
+  return response.json();
+}
+
+function LoadingCard({ label }) {
+  return (
+    <div className="card p-6" aria-busy="true">
+      <p className="text-sm font-medium text-muted">{label}</p>
+      <div className="mt-4 animate-pulse space-y-3" aria-hidden="true">
+        <div className="h-8 w-2/3 rounded-lg bg-sunken" />
+        <div className="h-3 w-full rounded-full bg-sunken" />
+        <div className="h-3 w-5/6 rounded-full bg-sunken" />
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
-  const [activeTab, setActiveTab] = useState('workbench');
-  const [metadata, setMetadata] = useState(null);
-  const [presets, setPresets] = useState([]);
-  const [activePresetId, setActivePresetId] = useState('modifiable-prediabetic');
+  const [activeTab, setActiveTab] = useState('checkup');
   const [indicators, setIndicators] = useState(DEFAULT_INDICATORS);
+
+  const [metadata, setMetadata] = useState(null);
+  const [loadError, setLoadError] = useState(false);
+  const [loadToken, setLoadToken] = useState(0);
+
   const [prediction, setPrediction] = useState(null);
-  const [isPredicting, setIsPredicting] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [isPredicting, setIsPredicting] = useState(true);
+  const [predictionError, setPredictionError] = useState(false);
+  const [predictToken, setPredictToken] = useState(0);
 
-  const fetchPrediction = useCallback(async (payload) => {
-    setIsPredicting(true);
-    try {
-      const res = await fetch('/api/predict', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+  const lastTab = useRef(activeTab);
+  const pageScrollRef = useRef(null);
+
+  /* Supporting data for the pages that explain the survey and the model. */
+  useEffect(() => {
+    const controller = new AbortController();
+    setLoadError(false);
+
+    getJson('/api/metadata', controller.signal)
+      .then((data) => {
+        if (!controller.signal.aborted) setMetadata(data);
+      })
+      .catch((error) => {
+        if (error.name === 'AbortError') return;
+        setLoadError(true);
       });
-      if (!res.ok) throw new Error(`Prediction error (${res.status})`);
-      const data = await res.json();
-      setPrediction(data);
-      setErrorMsg(null);
-    } catch (err) {
-      setErrorMsg(err.message);
-    } finally {
-      setIsPredicting(false);
-    }
-  }, []);
 
+    return () => controller.abort();
+  }, [loadToken]);
+
+  /* Live estimate. Debounced so dragging a slider sends one request, not fifty. */
   useEffect(() => {
-    async function initDashboard() {
+    const controller = new AbortController();
+    setIsPredicting(true);
+
+    const timer = window.setTimeout(async () => {
       try {
-        const [metaRes, presetRes] = await Promise.all([
-          fetch('/api/metadata'),
-          fetch('/api/presets'),
-        ]);
-        if (metaRes.ok) {
-          setMetadata(await metaRes.json());
-        }
-        if (presetRes.ok) {
-          const presetJson = await presetRes.json();
-          setPresets(presetJson.presets || []);
-        }
-      } catch (err) {
-        setErrorMsg('Backend API connection error. Ensure FastAPI is running on port 8000.');
+        const response = await fetch('/api/predict', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(indicators),
+          signal: controller.signal,
+        });
+        if (!response.ok) throw new Error(`Prediction returned ${response.status}`);
+        const data = await response.json();
+        setPrediction(data);
+        setPredictionError(false);
+        setIsPredicting(false);
+      } catch (error) {
+        if (error.name === 'AbortError') return;
+        setPredictionError(true);
+        setIsPredicting(false);
       }
-    }
-    initDashboard();
+    }, 160);
+
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [indicators, predictToken]);
+
+  /* A new page starts at the top, with focus on its heading. */
+  useEffect(() => {
+    if (lastTab.current === activeTab) return;
+    lastTab.current = activeTab;
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.getElementById('page-title')?.focus({ preventScroll: true });
+  }, [activeTab]);
+
+  const go = useCallback((tab) => setActiveTab(tab), []);
+
+  const handleIndicators = useCallback((next) => {
+    setIndicators(next);
   }, []);
 
-  useEffect(() => {
-    fetchPrediction(indicators);
-  }, [indicators, fetchPrediction]);
-
-  const handleUpdateIndicator = (key, value) => {
-    setActivePresetId(null);
-    setIndicators((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-  const handleSelectPreset = (preset) => {
-    setActivePresetId(preset.id);
-    setIndicators({ ...preset.indicators });
-  };
-
-  const handleApplyOptimalInterventions = () => {
-    setActivePresetId(null);
-    setIndicators((prev) => ({
-      ...prev,
-      BMI: prev.BMI > 24.5 ? Math.max(23.5, Number((prev.BMI - 5.0).toFixed(1))) : prev.BMI,
-      HighBP: 0,
-      HighChol: 0,
-      Smoker: 0,
-      PhysActivity: 1,
-      Fruits: 1,
-      Veggies: 1,
-      HvyAlcoholConsump: 0,
-      DiffWalk: 0,
-      GenHlth: prev.GenHlth > 2 ? prev.GenHlth - 1 : prev.GenHlth,
-      PhysHlth: 0,
-      MentHlth: 0,
-    }));
-  };
-
-  const primaryEval =
-    metadata?.ml_evaluation?.models?.HistGradientBoosting?.standard_threshold_050;
+  /* Mirrors the backend's "all modifiable factors optimised" row, so the
+     projection the person just read is the estimate they get after applying. */
+  const handleApplyInterventions = useCallback(() => {
+    setIndicators((previous) => {
+      const next = { ...previous };
+      if (previous.BMI > 24.5) {
+        next.BMI = Math.max(23.5, Math.round((previous.BMI - 5) * 10) / 10);
+      }
+      for (const key of ['HighBP', 'HighChol', 'Smoker', 'HvyAlcoholConsump', 'DiffWalk']) {
+        if (previous[key] === 1) next[key] = 0;
+      }
+      for (const key of ['PhysActivity', 'Fruits', 'Veggies']) {
+        if (previous[key] === 0) next[key] = 1;
+      }
+      if (previous.GenHlth > 2) next.GenHlth = Math.max(2, previous.GenHlth - 1);
+      if (previous.MentHlth > 2) next.MentHlth = 0;
+      if (previous.PhysHlth > 2) next.PhysHlth = 0;
+      return next;
+    });
+  }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
-      {/* Clean Top Navigation Bar */}
-      <header className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6 py-3 min-h-[64px] flex flex-col md:flex-row md:items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-teal-700 text-white rounded-md flex items-center justify-center shrink-0">
-              <PulseIcon className="w-4 h-4" />
-            </div>
-            <div className="flex items-center gap-2.5">
-              <span className="text-[16px] font-bold tracking-tight text-slate-900">
-                GlycoStrat AI
-              </span>
-              <span className="px-2.5 py-0.5 text-[14px] font-medium bg-teal-50 text-teal-800 rounded-sm">
-                CDC BRFSS • N = 253,680
-              </span>
-            </div>
-          </div>
+    <div className="flex h-dvh flex-col overflow-hidden bg-canvas text-ink">
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
 
-          <nav className="flex flex-wrap items-center gap-2" aria-label="Primary Clinical Views">
-            <button
-              type="button"
-              onClick={() => setActiveTab('workbench')}
-              className={`px-4 py-2 text-[16px] font-medium rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-700 ${
-                activeTab === 'workbench'
-                  ? 'bg-slate-900 text-white'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-              }`}
-            >
-              Risk Assessment
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab('eda')}
-              className={`px-4 py-2 text-[16px] font-medium rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-700 ${
-                activeTab === 'eda'
-                  ? 'bg-slate-900 text-white'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-              }`}
-            >
-              Dataset Insights
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab('evaluation')}
-              className={`px-4 py-2 text-[16px] font-medium rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-700 ${
-                activeTab === 'evaluation'
-                  ? 'bg-slate-900 text-white'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-              }`}
-            >
-              Model Performance
-            </button>
+      <PageGrid />
+
+      <header className="app-header z-40 shrink-0 px-4 pt-2.5 sm:px-6 sm:pt-4">
+        <div className="mx-auto flex max-w-[69rem] items-center gap-1.5 rounded-full border border-line bg-surface/90 px-1 py-1.5 shadow-float backdrop-blur-xl sm:gap-3 sm:px-3 sm:py-2.5">
+          <button
+            type="button"
+            onClick={() => go('checkup')}
+            className="press flex items-center gap-2 rounded-full text-left"
+            aria-label="GlycoStrat, go to the check-up"
+          >
+            <span className="flex size-8 items-center justify-center rounded-full bg-accent text-accent-ink sm:size-9">
+              <Icon icon={HeartPulse} size={19} />
+            </span>
+            <span className="hidden font-display text-[17px] font-bold tracking-[-0.02em] text-ink sm:inline sm:text-lg">
+              GlycoStrat
+            </span>
+          </button>
+
+          <nav aria-label="Sections" className="ml-auto flex items-center gap-0.5 sm:gap-1">
+            {TABS.map((tab) => {
+              const active = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => go(tab.id)}
+                  aria-current={active ? 'page' : undefined}
+                  className={`press relative shrink-0 rounded-full px-2.5 py-1.5 text-[12px] font-semibold sm:px-4 sm:py-2 sm:text-sm ${
+                    active ? 'text-accent-ink' : 'text-soft hover:bg-sunken hover:text-ink'
+                  }`}
+                >
+                  {active ? (
+                    <motion.span
+                      layoutId="app-tab-pill"
+                      className="absolute inset-0 rounded-full bg-accent"
+                      transition={SPRING_SNAP}
+                    />
+                  ) : null}
+                  <span className="relative z-10 sm:hidden">{tab.short}</span>
+                  <span className="relative z-10 hidden sm:inline">{tab.label}</span>
+                </button>
+              );
+            })}
           </nav>
+
+          <ThemeToggle />
         </div>
       </header>
 
-      {/* Clean, Uncluttered Header (No Box Wall) */}
-      <section className="bg-white border-b border-slate-200 py-8">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-wrap items-center gap-4 text-[14px] font-medium text-slate-500 mb-2">
-            <span className="px-2.5 py-0.5 bg-slate-100 text-slate-700 rounded-sm">
-              UCI Dataset #891
+      <main
+        id="main"
+        tabIndex={-1}
+        className="relative z-10 mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col px-4 py-4 focus:outline-none sm:px-6 sm:py-6 lg:py-5"
+      >
+        {loadError ? (
+          <div className="mb-4 flex shrink-0 flex-wrap items-center gap-3 rounded-xl border border-warn/40 bg-warn-soft px-4 py-3 text-sm text-warn-text">
+            <span className="min-w-0 flex-1">
+              The extra data didn&rsquo;t load. The check-up still works.
             </span>
-            <span>•</span>
-            <span>Monotonic Clinical Gradient Boosting</span>
-            <span>•</span>
-            <span className="font-mono text-teal-800 font-semibold">
-              ROC-AUC: {primaryEval ? primaryEval.roc_auc.toFixed(4) : '0.8253'}
-            </span>
+            <button
+              type="button"
+              onClick={() => setLoadToken((token) => token + 1)}
+              className="press inline-flex items-center gap-1.5 rounded-lg bg-surface px-3 py-1.5 text-xs font-semibold text-ink"
+            >
+              <Icon icon={Refresh} size={14} />
+              Retry
+            </button>
           </div>
+        ) : null}
 
-          <h1 className="text-[64px] leading-[1.08] tracking-tight font-bold text-slate-900">
-            Diabetes Risk Stratification
-          </h1>
-          <p className="text-[18px] leading-[1.6] text-slate-600 max-w-3xl mt-2">
-            Interactive clinical screening and counterfactual lifestyle simulation trained on 253,680 US adult health records with strict medical monotonicity constraints.
-          </p>
-        </div>
-      </section>
-
-      {/* Main Content */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
-        {errorMsg && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-300 rounded-md flex items-center gap-3 text-sm text-red-900">
-            <AlertTriangleIcon className="w-5 h-5 text-red-700 shrink-0" />
-            <span>{errorMsg}</span>
-          </div>
-        )}
-
-        {activeTab === 'workbench' && (
-          <RiskWorkbench
+        {activeTab === 'checkup' ? (
+          <Checkup
             indicators={indicators}
-            onUpdateIndicator={handleUpdateIndicator}
-            presets={presets}
-            activePresetId={activePresetId}
-            onSelectPreset={handleSelectPreset}
-            onApplyOptimalInterventions={handleApplyOptimalInterventions}
+            onChange={handleIndicators}
             prediction={prediction}
             isPredicting={isPredicting}
+            error={predictionError}
+            onRetry={() => setPredictToken((token) => token + 1)}
+            onApplyInterventions={handleApplyInterventions}
           />
-        )}
+        ) : null}
 
-        {activeTab === 'eda' && <PopulationEDA eda={metadata?.eda} />}
+        {activeTab === 'data' ? (
+          <div className="relative min-h-0 flex-1">
+            <div
+              ref={pageScrollRef}
+              className="h-full overflow-y-auto overscroll-contain pr-1"
+            >
+              {metadata?.eda ? (
+                <ExploreData eda={metadata.eda} />
+              ) : (
+                <div className="space-y-5">
+                  <h1
+                    id="page-title"
+                    tabIndex={-1}
+                    className="font-display text-4xl font-bold tracking-[-0.03em] text-ink focus:outline-none"
+                  >
+                    The data
+                  </h1>
+                  <LoadingCard label="Loading the survey data…" />
+                </div>
+              )}
+            </div>
+            <ScrollCue targetRef={pageScrollRef} />
+          </div>
+        ) : null}
 
-        {activeTab === 'evaluation' && (
-          <ModelEvaluation mlEval={metadata?.ml_evaluation} />
-        )}
+        {activeTab === 'how' ? (
+          <div className="relative min-h-0 flex-1">
+            <div
+              ref={pageScrollRef}
+              className="h-full overflow-y-auto overscroll-contain pr-1"
+            >
+              {metadata?.ml_evaluation ? (
+                <HowItWorks mlEval={metadata.ml_evaluation} />
+              ) : (
+                <div className="space-y-5">
+                  <h1
+                    id="page-title"
+                    tabIndex={-1}
+                    className="font-display text-4xl font-bold tracking-[-0.03em] text-ink focus:outline-none"
+                  >
+                    How it works
+                  </h1>
+                  <LoadingCard label="Loading the model details…" />
+                </div>
+              )}
+            </div>
+            <ScrollCue targetRef={pageScrollRef} />
+          </div>
+        ) : null}
       </main>
 
-      {/* Minimal Footer */}
-      <footer className="bg-white border-t border-slate-200 py-5 mt-12">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-slate-500">
-          <div>
-            <strong className="text-slate-700">Academic Prototype Disclaimer:</strong> Built for BE (AI&DS) Healthcare AI/ML coursework. Not a substitute for professional medical diagnosis.
-          </div>
-          <div className="font-mono">
-            UCI ML Repository ID 891 • N = 253,680
-          </div>
+      <footer className="app-footer relative z-10 shrink-0">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2 text-[11px] font-medium text-muted sm:px-6 sm:py-3 sm:text-[13px]">
+          <p className="truncate">&copy; 2026 GlycoStrat. All rights reserved.</p>
+          <p className="shrink-0 whitespace-nowrap">
+            crafted by{' '}
+            <a
+              href="https://github.com/Hike-12"
+              target="_blank"
+              rel="noreferrer"
+              className="squiggle-link font-semibold text-soft transition-colors hover:text-ink"
+            >
+              aliqyaan
+            </a>
+            {' & '}
+            <a
+              href="https://github.com/romeirofernandes"
+              target="_blank"
+              rel="noreferrer"
+              className="squiggle-link font-semibold text-soft transition-colors hover:text-ink"
+            >
+              romeiro
+            </a>
+          </p>
         </div>
       </footer>
     </div>

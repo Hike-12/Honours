@@ -224,7 +224,7 @@ def build_reports():
         ["CO1 / CO6", "Explain the selected AI/ML computational model and why it is suitable.", "Mathematical and algorithmic justification of Histogram-Based Gradient Boosted Decision Trees for capturing non-linear clinical interactions (Age x BMI x Hypertension) across 253,680 tabular patient records with O(bins x N) efficiency, benchmarked against Logistic Regression and Random Forest."],
         ["CO2", "Develop a healthcare application using appropriate computational tools.", "Full-stack implementation combining a Python FastAPI inference server (Pydantic clinical validation, vectorized counterfactual ablations) with a React 18 and Tailwind CSS clinical telemetry interface."],
         ["CO3", "Apply a suitable model to the selected healthcare problem.", "Training and probability calibration of supervised classifiers on 202,944 training patients to estimate diabetes/prediabetes risk from 21 non-invasive BRFSS indicators."],
-        ["CO4", "Analyze and justify model performance using appropriate evaluation metrics.", "Comprehensive evaluation on 50,736 held-out stratified test records using ROC-AUC (0.8271), PR-AUC (0.4238), Accuracy, Precision, Sensitivity (Recall), Specificity, F1-Score, Brier calibration loss, and clinical threshold optimization (tau = 0.28 vs tau = 0.50)."],
+        ["CO4", "Analyze and justify model performance using appropriate evaluation metrics.", "Comprehensive evaluation on 50,736 held-out stratified test records using ROC-AUC (0.8216), PR-AUC (0.4096), Accuracy, Precision, Sensitivity (Recall), Specificity, F1-Score, Brier calibration loss, and clinical threshold optimization (tau = 0.28 vs tau = 0.50)."],
         ["CO5", "Design and implement an AI/ML-based healthcare application.", "End-to-end working prototype featuring preset clinical cohorts, 21-indicator interactive form controls, local feature attribution charts, and a counterfactual What-If risk reduction simulator."],
         ["Experiments 1, 2, 6 & 8", "Healthcare Data Cleaning, EDA, Disease Risk Modeling & Explainable Dashboard.", "Automated UCI data pipeline, 253,680-record epidemiological visualization module, multi-model comparative benchmark, and patient-specific marginal attribution engine."],
     ]
@@ -301,7 +301,7 @@ def build_reports():
     )
     add_justified_paragraph(
         doc,
-        "Clinical Screening Threshold Calibration: Because positive cases represent 13.93% of the population, predicted probabilities for high-risk patients frequently cluster between 0.25 and 0.55. Using an uncalibrated default threshold of tau = 0.50 prioritizes specificity (94.81%) at the expense of clinical sensitivity (31.54%), missing more than two-thirds of true diabetic/prediabetic individuals. By evaluating threshold sensitivity across the validation curve, we calibrated a dedicated Clinical Screening Cut-Point at tau = 0.28, which maximizes the harmonic F1-Score (0.4590) and boosts screening sensitivity (recall) to 51.79% while maintaining 88.04% specificity and a 91.9% Negative Predictive Value (NPV).",
+        "Clinical Screening Threshold Calibration: Because positive cases represent 13.93% of the population, predicted probabilities for high-risk patients frequently cluster between 0.25 and 0.55. Using an uncalibrated default threshold of tau = 0.50 prioritizes specificity (95.90%) at the expense of clinical sensitivity (25.08%), missing about three-quarters of true diabetic/prediabetic individuals. By evaluating threshold sensitivity across the validation curve, we calibrated a dedicated Clinical Screening Cut-Point at tau = 0.28, which maximizes the harmonic F1-Score (0.4577) and boosts screening sensitivity (recall) to 54.11% while maintaining 86.67% specificity and a 92.11% Negative Predictive Value (NPV).",
     )
 
     # Section 23: Implementation Details and Tools Used
@@ -479,7 +479,7 @@ def build_reports():
     add_section_heading(doc, "26. Conclusion, Limitations, Ethical Considerations, and Future Scope")
     add_justified_paragraph(
         doc,
-        "Conclusion: This mini project successfully designed, implemented, and validated GlycoStrat AI, an end-to-end clinical risk prediction and explainability web application built on 253,680 real-world patient records from the CDC Diabetes Health Indicators dataset. By pairing a high-accuracy Histogram-Based Gradient Boosting classifier (ROC-AUC 0.8271) with sensitivity-calibrated screening thresholds (tau = 0.28) and real-time counterfactual feature attribution, the system transforms static epidemiological survey variables into an interactive, transparent clinical decision-support tool.",
+        "Conclusion: This mini project successfully designed, implemented, and validated GlycoStrat AI, an end-to-end clinical risk prediction and explainability web application built on 253,680 real-world patient records from the CDC Diabetes Health Indicators dataset. By pairing a high-accuracy Histogram-Based Gradient Boosting classifier (ROC-AUC 0.8216) with sensitivity-calibrated screening thresholds (tau = 0.28) and real-time counterfactual feature attribution, the system transforms static epidemiological survey variables into an interactive, transparent clinical decision-support tool.",
     )
     add_justified_paragraph(
         doc,

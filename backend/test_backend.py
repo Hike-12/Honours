@@ -8,6 +8,8 @@ Verifies that:
 4. Regular Physical Activity (`PhysActivity=1`), Fruits (`Fruits=1`), and Veggies (`Veggies=1`)
    strictly decrease (protect against) risk across all patient profiles.
 5. Local feature attributions never show negative (protective) signs for harmful risk factors.
+6. `CholCheck` is accepted by the API for backward compatibility but is excluded from the
+   20-variable model, so it never changes the prediction or appears as a risk driver.
 """
 from fastapi.testclient import TestClient
 from main import app
@@ -28,6 +30,13 @@ def run_self_check():
     meta = r_meta.json()
     roc_auc = meta["ml_evaluation"]["models"]["HistGradientBoosting"]["standard_threshold_050"]["roc_auc"]
     assert roc_auc > 0.81, f"Expected ROC-AUC > 0.81, got {roc_auc}"
+
+    # 2b. Healthcare-access proxy is excluded from the model space
+    feature_order = meta["ml_evaluation"]["feature_order"]
+    assert len(feature_order) == 20, f"Expected 20 model variables, got {len(feature_order)}"
+    assert "CholCheck" not in feature_order, "CholCheck must not be a model feature"
+    importance_features = {item["feature"] for item in meta["ml_evaluation"]["feature_importances"]}
+    assert "CholCheck" not in importance_features, "CholCheck must not have a feature importance"
 
     # 3. Exhaustive Clinical Monotonicity Verification across all 4 Presets
     harmful_binary = [
@@ -86,7 +95,8 @@ def run_self_check():
         p_gh_poor = client.post("/api/predict", json={**base_ind, "GenHlth": 5}).json()["probability"]
         assert p_gh_poor > p_gh_good, f"GenHlth monotonicity failed in {preset['id']}"
 
-    # 4. Randomized 50-Patient Stress Test across the 21-variable space
+    # 4. Randomized 50-Patient Stress Test across the 20-variable model space
+    #    (CholCheck is accepted in the payload but ignored by the model)
     import random
     rng = random.Random(42)
     for i in range(50):
@@ -124,6 +134,13 @@ def run_self_check():
         p_pa_0 = client.post("/api/predict", json={**rand_ind, "PhysActivity": 0}).json()["probability"]
         p_pa_1 = client.post("/api/predict", json={**rand_ind, "PhysActivity": 1}).json()["probability"]
         assert p_pa_1 < p_pa_0, f"Random profile #{i}: PhysActivity=1 did not reduce risk!"
+
+        # CholCheck is a healthcare-access proxy, not a causal risk factor: it must be inert.
+        p_cc_0 = client.post("/api/predict", json={**rand_ind, "CholCheck": 0}).json()["probability"]
+        p_cc_1 = client.post("/api/predict", json={**rand_ind, "CholCheck": 1}).json()["probability"]
+        assert p_cc_0 == p_cc_1, (
+            f"Random profile #{i}: CholCheck changed the prediction ({p_cc_0} vs {p_cc_1})!"
+        )
 
     print(
         f"[ALL CLINICAL SANITY & MONOTONICITY TESTS PASSED (INCLUDING 50 RANDOM PROFILES)]\n"
