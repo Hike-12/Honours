@@ -2,7 +2,7 @@
 
 An end-to-end Healthcare AI/ML Clinical Decision Support prototype built on the official **CDC Diabetes Health Indicators Dataset (UCI Machine Learning Repository ID: 891, N = 253,680 patients, 21 survey indicators of which 20 are used by the model)**.
 
-Developed for the **BE (AI&DS) Healthcare AI/ML Mini Project** (Suggested Topic 1: *Disease Risk Prediction Dashboard*, mapped to Experiments 1, 2, 6, and 8 and Course Outcomes CO1 to CO6).
+Developed for the **BE Comps Healthcare AI/ML Mini Project** (Suggested Topic 1: *Disease Risk Prediction Dashboard*, mapped to Experiments 1, 2, 6, and 8 and Course Outcomes CO1 to CO6).
 
 ---
 
